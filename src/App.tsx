@@ -1,10 +1,10 @@
 import React from 'react';
-import RacingLine from './components/RacingLine';
+import Garage from './pages/Garage';
 import './App.css';
 
 function App() {
   return (
-    <RacingLine />
+    <Garage />
   );
 }
 
