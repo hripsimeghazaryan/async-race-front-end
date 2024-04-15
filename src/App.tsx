@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import RacingLine from './components/RacingLine';
 import './App.css';
 
