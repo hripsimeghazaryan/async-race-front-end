@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import requests from "../utils/resuests";
+import { FaCarSide } from "react-icons/fa6";
+import './RacingLine.css';
 
 interface Car {
     name: "string",
@@ -12,10 +14,6 @@ function RacingLine() {
 
     useEffect(() => {
         const get = async () => {
-            // const response = await fetch("http://127.0.0.1:3000/garage/1");
-            // const res = await response.json()
-            // console.log(res)
-            // setCar(res);
             const data = await requests.getCars();
             setCar(data)
         }
@@ -23,7 +21,16 @@ function RacingLine() {
     }, []);
 
     return (
-        <div>{car?.map((item) => <div key={item.id}>{item.name}</div>)}</div>
+        <div>{car?.map((item) => (
+            <div key={item.id} className="line-container">
+                <div className="line line-dir">
+                    <div className="car">
+                        <FaCarSide fontSize="2em" color={item.color}/>
+                    </div>
+                    <span className="car-name">{item.name}</span>
+                </div>
+            </div>
+        ))}</div>
     )
 
 } 
