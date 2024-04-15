@@ -1,0 +1,11 @@
+.btn-style {
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 5%;
+}
+
+.btn-style:hover {
+    border-color: #8a2be2;
+    color: #8a2be2;
+}

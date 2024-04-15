@@ -1,0 +1,9 @@
+.garage-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.racing-track-container {
+    width: 75%;
+}
