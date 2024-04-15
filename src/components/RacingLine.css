@@ -4,6 +4,11 @@
     border-left: none;
 }
 
+.line-container.selected {
+    border-top: 2px solid #8a2be2;
+    border-bottom: 2px solid #8a2be2;
+}
+
 .line {
     padding: 10px;
 }
@@ -17,4 +22,9 @@
     color: #fff;
     opacity: 0.2;
     align-self: center;
+}
+
+.side-btn-container {
+    display: flex;
+    flex-direction: column;
 }
