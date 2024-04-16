@@ -37,7 +37,7 @@ class Requests {
             }
             const data = await response.json() as Car;
             return data;
-          } catch (error) {
+        } catch (error) {
             console.error('Error creating new car:', error);
             throw error;
         }
