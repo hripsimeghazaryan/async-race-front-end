@@ -24,8 +24,12 @@ export const GarageProvider = ({ children }: { children: ReactNode}) => {
         const response = await requests.deleteCar(id);
     }
 
+    const updateCar = async (id: number, carData: CreateCar) => {
+        const response = await requests.updateCar(id, carData);
+    }
+      
     return (
-        <GarageDataContext.Provider value={{cars, createCar, deleteCar}}>{children}</GarageDataContext.Provider>
+        <GarageDataContext.Provider value={{cars, createCar, deleteCar, updateCar}}>{children}</GarageDataContext.Provider>
     )
 }
 

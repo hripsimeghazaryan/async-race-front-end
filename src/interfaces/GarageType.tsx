@@ -5,4 +5,5 @@ export type GarageType = {
     cars: Car[];
     createCar: (carData: CreateCar) => void;
     deleteCar: (id: number) => void;
+    updateCar: (id: number, carData: CreateCar) => void
 }

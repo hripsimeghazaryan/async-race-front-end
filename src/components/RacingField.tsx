@@ -3,12 +3,13 @@ import RacingLine from "./RacingLine";
 import { GarageType } from "../interfaces/GarageType";
 import { GarageDataContext } from "../contexts/garage-data";
 
-function RacingField () {
+function RacingField (props: {toUpdate: (id: number) => void}) {
     const [isSelected, setIsSelected] = useState<number | null>(null); 
     const { cars } = useContext(GarageDataContext) as GarageType;
 
     const onSelect = (id: number) => {
-        setIsSelected(isSelected === id ? null : id)
+        setIsSelected(isSelected === id ? null : id);      
+        props.toUpdate(id);  
     }
 
     return (

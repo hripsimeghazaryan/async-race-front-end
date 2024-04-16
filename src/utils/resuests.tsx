@@ -1,8 +1,5 @@
-interface Car {
-    name: string, 
-    color: string,
-    id?: number
-}
+import Car from "../interfaces/Car";
+import CreateCar from "../interfaces/CreateCar";
 
 class Requests {
     url: string;
@@ -23,7 +20,7 @@ class Requests {
         return data;
     }
 
-    createCar = async (carData: Car): Promise<Car> => {
+    createCar = async (carData: CreateCar) => {
         try {
             const response = await fetch(`${this.url}/garage`, {
                 method: 'POST',
@@ -49,12 +46,15 @@ class Requests {
         return data;
     }
 
-    updateCar = async (id: number) => {
+    updateCar = async (id: number, carData: CreateCar) => {
         const response = await fetch(`${this.url}/garage/${id}`, {
             method: "PUT",
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify(carData),
         });
-        const data = await response.json()
+        const data = await response.json() as Car;
         return data;
     }
 
