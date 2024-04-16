@@ -1,3 +1,9 @@
+interface Car {
+    name: string, 
+    color: string,
+    id?: number
+}
+
 class Requests {
     url: string;
 
@@ -17,14 +23,24 @@ class Requests {
         return data;
     }
 
-    createCar = async (name: string, color: string) => {
-        const response = await fetch(`${this.url}/garage}`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const data = await response.json()
-        return data;
-
+    createCar = async (carData: Car): Promise<Car> => {
+        try {
+            const response = await fetch(`${this.url}/garage`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(carData),
+              });
+            if (!response.ok) {
+              throw new Error(`Network response was not ok: ${response.status}`);
+            }
+            const data = await response.json() as Car;
+            return data;
+          } catch (error) {
+            console.error('Error creating new car:', error);
+            throw error;
+        }
     }
 
     deleteCar = async (id: number) => {
