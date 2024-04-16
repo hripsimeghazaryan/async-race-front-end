@@ -1,29 +1,27 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext, useState } from "react";
 import RacingLine from "./RacingLine";
-import requests from "../utils/resuests";
-import Car from "../interfaces/Car";
+import { GarageType } from "../interfaces/GarageType";
 import { GarageDataContext } from "../contexts/garage-data";
 
-type GarageType = {
-    cars: Car[];
-}
-
 function RacingField () {
-    const [isSelected, setIsSelected] = useState<number | null>(null);
-    const { cars } = useContext(GarageDataContext) as GarageType
+    const [isSelected, setIsSelected] = useState<number | null>(null); 
+    const { cars } = useContext(GarageDataContext) as GarageType;
+
+    const onSelect = (id: number) => {
+        setIsSelected(isSelected === id ? null : id)
+    }
 
     return (
         <div className="racing-field">{
             cars?.map((item) => 
             <RacingLine 
-            id={item.id} 
-            name={item.name} 
-            color={item.color}
+            car={item}
+            select={isSelected === item.id}
+            onSelect={onSelect}
             />)
         }
         </div>
     )
-
 }
 
 export default RacingField;
