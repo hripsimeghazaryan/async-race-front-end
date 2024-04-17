@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -6,14 +9,14 @@ import reportWebVitals from './reportWebVitals';
 import { GarageProvider } from './contexts/garage-data';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
     <GarageProvider>
       <App />
     </GarageProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
