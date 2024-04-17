@@ -66,24 +66,26 @@ function Garage() {
   };
 
   return (
-    <div className="garage-container">
+    <div className="page-container">
       <div className="garage-header">
         <h1 className="page-title garage-title">Garage</h1>
       </div>
-      <Button title="Generate" onClick={() => handleGenerateCars(10)} />
-      <div className="create-car-container">
-        <form onSubmit={handleSubmit} className="create-car-form">
-          <input type="text" value={newName} onChange={(event) => setNewName(event?.target.value)} />
-          <input type="color" value={newColor} onChange={(event) => setNewColor(event?.target.value)} />
-          <input type="submit" />
-        </form>
-      </div>
-      <div className="update-car-container">
-        <form onSubmit={handleUpdateCar} className="create-car-form">
-          <input type="text" value={updateName} onChange={(event) => setUpdateName(event?.target.value)} />
-          <input type="color" value={updateColor} onChange={(event) => setUpdateColor(event?.target.value)} />
-          <input type="submit" />
-        </form>
+      <div className="cars-modify-container">
+        <Button title="Generate" onClick={() => handleGenerateCars(10)} className="modify-item" />
+        <div className="create-car-container modify-item">
+          <form onSubmit={handleSubmit} className="car-form create-form">
+            <input type="text" value={newName} onChange={(event) => setNewName(event?.target.value)} />
+            <input type="color" value={newColor} onChange={(event) => setNewColor(event?.target.value)} />
+            <input type="submit" className="btn-style btn-hover" />
+          </form>
+        </div>
+        <div className="update-car-container modify-item">
+          <form onSubmit={handleUpdateCar} className="car-form update-form">
+            <input type="text" value={updateName} onChange={(event) => setUpdateName(event?.target.value)} />
+            <input type="color" value={updateColor} onChange={(event) => setUpdateColor(event?.target.value)} />
+            <input type="submit" className="btn-style btn-hover" />
+          </form>
+        </div>
       </div>
       <div className="racing-track-container">
         <RacingField toUpdate={handleUpdate} />

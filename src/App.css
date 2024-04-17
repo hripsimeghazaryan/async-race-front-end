@@ -1,2 +1,38 @@
+input[type="text"], input[type="submit"] {
+    padding: 4px;
+}
 
+.async-race-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.navigation-container {
+    display: flex;
+    justify-content: center;
+    height: 3rem;
+}
+
+.nav-btn {
+    margin: 5px;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    color: #fff;
+    text-shadow:
+      0 0 0px #fff,
+      0 0 5px #fff,
+      0 0 15px #fff,
+      0 0 20px #8a2be2,
+      0 0 25px #8a2be2,
+      0 0 30px #8a2be2,
+      0 0 40px #8a2be2,
+      0 0 45px #8a2be2;
+}
 
