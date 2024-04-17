@@ -1,5 +1,5 @@
-import Car from "../interfaces/Car";
-import CreateCar from "../interfaces/CreateCar";
+import Car from '../interfaces/Car';
+import CreateCar from '../interfaces/CreateCar';
 
 class Requests {
     url: string;
