@@ -1,6 +1,7 @@
-/* eslint-disable semi */
-export default interface Car {
+interface Car {
     name: string,
     color: string,
     id: number
 }
+
+export default Car;
