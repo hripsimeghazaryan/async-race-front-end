@@ -12,4 +12,5 @@ export type GarageType = {
     updateCar: (id: number, carData: CreateCar) => void;
     pagination: Pagination;
     changePagination: (page: number, limit: number) => void;
+    generateCars: (count: number) => void;
 }

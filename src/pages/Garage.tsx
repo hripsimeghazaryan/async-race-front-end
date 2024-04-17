@@ -15,7 +15,7 @@ import './Garage.css';
 
 function Garage() {
   const {
-    createCar, updateCar, pagination, changePagination,
+    createCar, updateCar, pagination, changePagination, generateCars,
   } = useContext(GarageDataContext) as GarageType;
   const [newName, setNewName] = useState<string>('');
   const [newColor, setNewColor] = useState<string>('#ffffff');
@@ -61,11 +61,16 @@ function Garage() {
     changePagination(page - 1, limit);
   };
 
+  const handleGenerateCars = (count: number) => {
+    generateCars(count);
+  };
+
   return (
     <div className="garage-container">
       <div className="garage-header">
         <h1 className="page-title garage-title">Garage</h1>
       </div>
+      <Button title="Generate" onClick={() => handleGenerateCars(10)} />
       <div className="create-car-container">
         <form onSubmit={handleSubmit} className="create-car-form">
           <input type="text" value={newName} onChange={(event) => setNewName(event?.target.value)} />
