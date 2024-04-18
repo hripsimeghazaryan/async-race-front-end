@@ -1,9 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable no-console */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
 import { useContext } from 'react';
 import { FaCarSide } from 'react-icons/fa6';
 import Button from './Button';

@@ -1,6 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/button-has-type */
 import './Button.css';
 
 interface ButtonProps {

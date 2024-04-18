@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
 import Car from './Car';
 import CreateCar from './CreateCar';
 import Pagination from './Pagination';

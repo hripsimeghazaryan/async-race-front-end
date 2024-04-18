@@ -1,9 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/jsx-no-constructed-context-values */
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
 import {
   ReactNode, createContext, useState, useEffect,
 } from 'react';
