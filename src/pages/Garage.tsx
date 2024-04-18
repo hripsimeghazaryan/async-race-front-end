@@ -90,17 +90,21 @@ function Garage() {
       <div className="racing-track-container">
         <RacingField toUpdate={handleUpdate} />
         <div className="racing-track-pagination">
-          {pagination.page > 1 && (
-            <Button title="Prev" onClick={() => handlePrevPage(pagination.page, pagination.limit)} />
-          )}
+          <Button
+            title="Prev"
+            onClick={() => handlePrevPage(pagination.page, pagination.limit)}
+            className={(pagination.page > 1) ? '' : 'btn-hidden'}
+          />
           <p className="pagintation-txt">
             {pagination.page}
             /
             {pagination.total}
           </p>
-          {pagination.page < pagination.total && (
-            <Button title="Next" onClick={() => handleNextPage(pagination.page, pagination.limit)} />
-          )}
+          <Button
+            title="Next"
+            onClick={() => handleNextPage(pagination.page, pagination.limit)}
+            className={(pagination.page < pagination.total) ? '' : 'btn-hidden'}
+          />
         </div>
       </div>
     </div>
