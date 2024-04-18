@@ -24,7 +24,16 @@
     align-self: center;
 }
 
+.car {
+    position: relative;
+}
+
 .side-btn-container {
     display: flex;
     flex-direction: column;
+}
+
+@keyframes drive-car {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
 }

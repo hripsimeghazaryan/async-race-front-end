@@ -9,3 +9,7 @@
     border-color: #8a2be2;
     color: #8a2be2;
 }
+
+.btn-hidden {
+    visibility: hidden;
+}
