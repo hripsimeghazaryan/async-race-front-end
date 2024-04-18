@@ -1,9 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
-import { Configuration } from 'webpack';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+import type { Configuration } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-const config: Configuration = {
+interface WebpackConfig extends Configuration, DevServerConfiguration {}
+
+const config: WebpackConfig = {
   mode: 'development',
   entry: path.resolve(__dirname, './src/index.tsx'),
   output: {
@@ -37,6 +40,14 @@ const config: Configuration = {
       template: './public/index.html',
     }),
   ],
+  devServer: {
+    proxy: [{
+      context: '/garage',
+      target: 'http://127.0.0.1:3000',
+      changeOrigin: true,
+      pathRewrite: { '^/garage': '' },
+    }],
+  },
 };
 
 export default config;
