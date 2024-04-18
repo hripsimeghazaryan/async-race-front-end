@@ -1,39 +1,43 @@
 .line-container {
-    border: 0.5px solid #fff;
-    border-right: none;
-    border-left: none;
+  border: 0.5px solid #fff;
+  border-right: none;
+  border-left: none;
 }
 
 .line-container.selected {
-    border-top: 2px solid #8a2be2;
-    border-bottom: 2px solid #8a2be2;
+  border-top: 2px solid #8a2be2;
+  border-bottom: 2px solid #8a2be2;
 }
 
 .line {
-    padding: 10px;
+  padding: 10px;
 }
 
 .line-dir {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .car-name {
-    color: #fff;
-    opacity: 0.2;
-    align-self: center;
+  color: #fff;
+  opacity: 0.2;
+  align-self: center;
 }
 
 .car {
-    position: relative;
+  position: relative;
 }
 
 .side-btn-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes drive-car {
-    from { transform: translateX(0); }
-    to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
