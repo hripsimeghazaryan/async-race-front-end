@@ -1,9 +1,6 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
 import React from 'react';
 import {
-  Routes, Route, Navigate, useNavigate,
+  Routes, Route, useNavigate,
 } from 'react-router-dom';
 import Garage from './pages/Garage';
 import Winners from './pages/Winners';
@@ -14,11 +11,11 @@ function App() {
   const navigate = useNavigate();
 
   const handleGarageB = () => {
-    navigate('/garage');
+    navigate('/');
   };
 
   const handleWinnersB = () => {
-    navigate('/winners');
+    navigate('/win');
   };
 
   return (
@@ -28,9 +25,9 @@ function App() {
         <Button title="Winners" onClick={handleWinnersB} className="nav-btn" />
       </div>
       <Routes>
-        <Route path="" element={<Navigate to="/garage" />} />
-        <Route path="/garage" element={<Garage />} />
-        <Route path="/winners" element={<Winners />} />
+        {/* <Route path="" element={<Navigate to="/garage" />} /> */}
+        <Route path="/" element={<Garage />} />
+        <Route path="/win" element={<Winners />} />
       </Routes>
     </div>
   );
