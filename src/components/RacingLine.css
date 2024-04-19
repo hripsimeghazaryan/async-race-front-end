@@ -26,6 +26,11 @@
 
 .car {
   position: relative;
+  transform: translateX(var(--car-position, 0px));
+}
+
+.car-animation {
+  animation: car-drive var(--velocity, 16ms) ease-in-out forwards;
 }
 
 .side-btn-container {
@@ -33,11 +38,11 @@
   flex-direction: column;
 }
 
-@keyframes drive-car {
+@keyframes car-drive {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(100%);
+    transform: translateX(calc(var(--car-position) + 100px));
   }
 }
