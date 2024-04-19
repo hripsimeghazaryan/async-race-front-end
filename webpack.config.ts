@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import path from 'path';
 import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import type { Configuration } from 'webpack';
@@ -40,14 +39,6 @@ const config: WebpackConfig = {
       template: './public/index.html',
     }),
   ],
-  devServer: {
-    proxy: [{
-      context: '/garage',
-      target: 'http://127.0.0.1:3000',
-      changeOrigin: true,
-      pathRewrite: { '^/garage': '' },
-    }],
-  },
 };
 
 export default config;
