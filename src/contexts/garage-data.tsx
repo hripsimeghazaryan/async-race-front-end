@@ -26,7 +26,7 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       setPagination({ ...pagination, total });
     };
     getCars();
-  }, []);
+  }, [JSON.stringify(cars), JSON.stringify(pagination)]);
 
   const createCar = async (carData: CreateCar) => {
     const response = await requests.createCar(carData);
@@ -46,6 +46,9 @@ export function GarageProvider({ children }: { children: ReactNode}) {
 
   const updateCar = async (id: number, carData: CreateCar) => {
     const response = await requests.updateCar(id, carData);
+    const newData = await requests.getCars(pagination.page, pagination.limit);
+    const { data } = newData;
+    setCars(data);
   };
 
   const changePagination = async (page: number, limit: number) => {
