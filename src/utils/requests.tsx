@@ -1,5 +1,6 @@
 import Car from '../interfaces/Car';
 import CreateCar from '../interfaces/CreateCar';
+import Winner from '../interfaces/Winner';
 
 class Requests {
   url: string;
@@ -15,7 +16,7 @@ class Requests {
       throw new Error(`Failed to fetch cars: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: Car[] = await response.json();
     const total = Math.ceil(parseInt((response.headers.get('X-Total-Count')) || '0', 10) / limit);
     return { data, total };
   };
@@ -27,7 +28,7 @@ class Requests {
       throw new Error(`Failed to fetch car: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: Car = await response.json();
     return data;
   };
 
@@ -44,7 +45,7 @@ class Requests {
       throw new Error(`Network response was not ok: ${response.status}`);
     }
 
-    const data = await response.json() as Car;
+    const data: Car = await response.json();
     return data;
   };
 
@@ -69,7 +70,7 @@ class Requests {
       throw new Error(`Failed to update car: ${await response.text()}`);
     }
 
-    const data = await response.json() as Car;
+    const data: Car = await response.json();
     return data;
   };
 
@@ -77,13 +78,13 @@ class Requests {
     const response = await fetch(`${this.url}/winners`, {
       method: 'GET',
     });
-    const data = await response.json();
+    const data: Winner[] = await response.json();
     return data;
   };
 
   getWinner = async (id: number) => {
     const response = await fetch(`${this.url}/winners/${id}`, { method: 'GET' });
-    const data = await response.json();
+    const data: Winner = await response.json();
     return data;
   };
 
@@ -92,14 +93,14 @@ class Requests {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     });
-    const data = await response.json();
+    const data: Winner = await response.json();
     return data;
   };
 
   deleteWinner = async (id: number) => {
     const response = await fetch(`${this.url}/winners/${id}`, { method: 'DELETE' });
-    const data = await response.json();
-    return data;
+
+    return;
   };
 
   updateWinner = async (id: number) => {
@@ -107,7 +108,7 @@ class Requests {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
     });
-    const data = await response.json();
+    const data: Winner = await response.json();
     return data;
   };
 }
