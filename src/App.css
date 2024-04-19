@@ -25,7 +25,7 @@ input[type="submit"] {
 }
 
 .page-title {
-  color: #fff;
+  color: #fff !important;
   text-shadow:
     0 0 0px #fff,
     0 0 5px #fff,
