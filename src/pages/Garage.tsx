@@ -5,6 +5,7 @@ import CreateCar from '../interfaces/CreateCar';
 import { GarageDataContext } from '../contexts/garage-data';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
+import { Typography } from 'antd';
 import './Garage.css';
 
 function Garage() {
@@ -50,6 +51,7 @@ function Garage() {
       updateCar(toUpdate, carData);
       setUpdateName('');
       setUpdateColor('#ffffff');
+      setToUpdate(null);
     }
   };
 
@@ -68,7 +70,7 @@ function Garage() {
   return (
     <div className="page-container">
       <div className="garage-header">
-        <h1 className="page-title garage-title">Garage</h1>
+        <Typography.Title className="page-title garage-title">Garage</Typography.Title>
       </div>
       <div className="cars-modify-container">
         <Button title="Generate" onClick={() => handleGenerateCars(10)} className="modify-item" />
