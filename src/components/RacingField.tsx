@@ -17,6 +17,7 @@ function RacingField(props: {toUpdate: (id: number) => void}) {
       {
             cars?.map((item) => (
               <RacingLine
+                key={item.id}
                 car={item}
                 select={isSelected === item.id}
                 onSelect={onSelect}
