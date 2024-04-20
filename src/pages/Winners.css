@@ -1,14 +1,14 @@
 .winners-table {
-    width: 80%;
+  width: 80%;
 }
 
 .winners-table .table-row {
-    padding: 24px;
-    border: 1px solid #ffffff;
-    color: #ffffff;
+  padding: 24px;
+  border: 1px solid #ffffff;
+  color: #ffffff;
 }
 
 .winners-table .table-header {
-    color: #8a2be2;
-    font-size: large;
+  color: #8a2be2;
+  font-size: large;
 }
