@@ -2,6 +2,7 @@ import { useState, useContext, FormEvent } from 'react';
 import RacingField from '../components/RacingField';
 import Button from '../components/Button';
 import CreateCar from '../interfaces/CreateCar';
+import PaginationComp from '../components/Pagination';
 import { GarageDataContext } from '../contexts/garage-data';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
@@ -91,23 +92,11 @@ function Garage() {
       </div>
       <div className="racing-track-container">
         <RacingField toUpdate={handleUpdate} />
-        <div className="pagination-container">
-          <Button
-            title="Prev"
-            onClick={() => handlePrevPage(pagination.page, pagination.limit)}
-            className={(pagination.page > 1) ? '' : 'btn-hidden'}
-          />
-          <p className="pagintation-txt">
-            {pagination.page}
-            /
-            {Math.ceil(pagination.total / pagination.limit)}
-          </p>
-          <Button
-            title="Next"
-            onClick={() => handleNextPage(pagination.page, pagination.limit)}
-            className={(pagination.page < Math.ceil(pagination.total / pagination.limit)) ? '' : 'btn-hidden'}
-          />
-        </div>
+        <PaginationComp
+        pagination={pagination}
+        nextPage={() => handleNextPage(pagination.page, pagination.limit)}
+        previousPage={() => handlePrevPage(pagination.page, pagination.limit)}
+        />
       </div>
     </div>
   );
