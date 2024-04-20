@@ -91,7 +91,7 @@ function Garage() {
       </div>
       <div className="racing-track-container">
         <RacingField toUpdate={handleUpdate} />
-        <div className="racing-track-pagination">
+        <div className="pagination-container">
           <Button
             title="Prev"
             onClick={() => handlePrevPage(pagination.page, pagination.limit)}
@@ -100,12 +100,12 @@ function Garage() {
           <p className="pagintation-txt">
             {pagination.page}
             /
-            {pagination.total}
+            {Math.ceil(pagination.total / pagination.limit)}
           </p>
           <Button
             title="Next"
             onClick={() => handleNextPage(pagination.page, pagination.limit)}
-            className={(pagination.page < pagination.total) ? '' : 'btn-hidden'}
+            className={(pagination.page < Math.ceil(pagination.total / pagination.limit)) ? '' : 'btn-hidden'}
           />
         </div>
       </div>
