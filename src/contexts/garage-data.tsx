@@ -28,27 +28,26 @@ export function GarageProvider({ children }: { children: ReactNode}) {
     getCars();
   }, [JSON.stringify(cars), JSON.stringify(pagination)]);
 
-  const createCar = async (carData: CreateCar) => {
-    const response = await requests.createCar(carData);
-    const newData = await requests.getCars(pagination.page, pagination.limit);
-    const { data, total } = newData;
+  const updateList = async () => {
+    const response = await requests.getCars(pagination.page, pagination.limit);
+    const { data, total } = response;
     setCars(data);
     setPagination({ ...pagination, total });
+  }
+
+  const createCar = async (carData: CreateCar) => {
+    const response = await requests.createCar(carData);
+    updateList();
   };
 
   const deleteCar = async (id: number) => {
     const response = await requests.deleteCar(id);
-    const newData = await requests.getCars(pagination.page, pagination.limit);
-    const { data, total } = newData;
-    setCars(data);
-    setPagination({ ...pagination, total });
+    updateList();
   };
 
   const updateCar = async (id: number, carData: CreateCar) => {
     const response = await requests.updateCar(id, carData);
-    const newData = await requests.getCars(pagination.page, pagination.limit);
-    const { data } = newData;
-    setCars(data);
+    updateList();
   };
 
   const changePagination = async (page: number, limit: number) => {
