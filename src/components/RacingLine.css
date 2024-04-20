@@ -18,6 +18,12 @@
   flex-direction: row;
 }
 
+.racing-road {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
 .car-name {
   color: #fff;
   opacity: 0.2;
