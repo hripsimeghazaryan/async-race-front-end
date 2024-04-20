@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { GarageProvider } from './contexts/garage-data';
+import { WinnerProvider } from './contexts/winners-data';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <GarageProvider>
-        <App />
+        <WinnerProvider>
+          <App />
+        </WinnerProvider>
       </GarageProvider>
     </BrowserRouter>
   </React.StrictMode>,
