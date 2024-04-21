@@ -1,6 +1,7 @@
 import { useState, useContext, FormEvent } from 'react';
 import RacingField from '../components/RacingField';
 import Button from '../components/Button';
+import Header from '../components/Header';
 import CreateCar from '../interfaces/CreateCar';
 import PaginationComp from '../components/Pagination';
 import { GarageDataContext } from '../contexts/garage-data';
@@ -70,9 +71,7 @@ function Garage() {
 
   return (
     <div className="page-container">
-      <div className="garage-header">
-        <Typography.Title className="page-title garage-title">Garage</Typography.Title>
-      </div>
+      <Header title={"Garage"} total={pagination.total} />
       <div className="cars-modify-container">
         <Button title="Generate" onClick={() => handleGenerateCars(10)} className="modify-item" />
         <div className="create-car-container modify-item">
@@ -88,6 +87,10 @@ function Garage() {
             <input type="color" value={updateColor} onChange={(event) => setUpdateColor(event?.target.value)} />
             <input type="submit" className="btn-style btn-hover" />
           </form>
+        </div>
+        <div className="car-racing-btns">
+          <Button title="Start Race" onClick={() => console.log("hesa")}/>
+          <Button title="Reset" onClick={() => console.log("hesa")}/>
         </div>
       </div>
       <div className="racing-track-container">

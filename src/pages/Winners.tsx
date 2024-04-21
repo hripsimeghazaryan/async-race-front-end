@@ -1,11 +1,11 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row } from "antd";
 import { FaCarSide } from 'react-icons/fa6';
-import Button from "../components/Button";
+import Header from "../components/Header";
 import PaginationComp from "../components/Pagination";
-import './Winners.css';
 import { useContext } from "react";
 import { WinnersType } from "../interfaces/WinnersType";
 import { WinnersDataContext } from "../contexts/winners-data";
+import './Winners.css';
 
 
 function Winners() {
@@ -21,9 +21,7 @@ function Winners() {
 
   return (
     <div className="page-container">
-      <div className="winners-header">
-        <Typography.Title className="page-title winners-title">Winners</Typography.Title>
-      </div>
+      <Header title={"Winner"} total={pagination.total} />
       <div className="winners-table">
         <Row className="table-header table-row">
           <Col span={4} order={1}>No</Col>
