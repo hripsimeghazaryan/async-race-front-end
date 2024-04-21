@@ -3,13 +3,19 @@ import './Button.css';
 interface ButtonProps {
   title: string,
   onClick: () => void,
-  className?: string
+  className?: string,
+  disabled?: boolean
 }
 
-function Button({ title, onClick, className }: ButtonProps) {
+function Button({ title, onClick, className, disabled }: ButtonProps) {
   return (
-    // eslint-disable-next-line react/react-in-jsx-scope
-    <button className={`btn-style btn-hover ${className || ''}`} onClick={onClick}>{title}</button>
+    <button
+    className={`btn-style btn-hover ${className || ''}`}
+    onClick={onClick}
+    disabled={disabled}
+    >
+      {title}
+    </button>
   );
 }
 

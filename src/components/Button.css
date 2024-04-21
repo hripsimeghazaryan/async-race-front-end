@@ -13,3 +13,8 @@
 .btn-hidden {
   visibility: hidden;
 }
+
+.btn-style:disabled, button[disabled] {
+  color:rgb(129, 126, 126);
+  border-color: rgb(129, 126, 126);
+}
