@@ -1,11 +1,10 @@
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import { FaCarSide } from 'react-icons/fa6';
 import Button from './Button';
 import Car from '../interfaces/Car';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
 import { GarageDataContext } from '../contexts/garage-data';
-import animate from 'animejs';
 import './RacingLine.css';
 
 type Props = {
@@ -15,52 +14,71 @@ type Props = {
 }
 
 function RacingLine({ car, select, onSelect }: Props) {
-  const engineStatus = useRef<'started' | 'stopped' | 'drive'>('stopped');
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const carPosition = useRef<number>(0);
-  // const [carPosition, setCarPosition] = useState<number>(0);
+  const carRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
+  const currentPosirionRef = useRef<number>(0);
+  const durationRef = useRef<number>(0);
+  const [engineStatus, setEngineStatus] = useState<'started' | 'stopped' | 'drive'>('stopped');
   const { deleteCar } = useContext(GarageDataContext) as GarageType;
 
-  const handleStartEngine = async () => {
-    if(engineStatus.current === 'stopped') {
-      engineStatus.current = 'started';
-      const response = await requests.startStopEngine(car.id, 'started');
-      const { distance, velocity } = response;
-      const duration = (distance / velocity) / 1000;
-      engineStatus.current = 'drive';
-      const driveRes = await requests.driveEngine(car.id);
+  const distance = (carRef.current?.parentElement?.offsetWidth) || 0;
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(animationRef.current!);
+  }, []);
+
+  const animate = () => {
+    if (carRef.current) {
+      const distanceLeft = distance - currentPosirionRef.current - 50;
+      const increment = Math.min(Math.abs(distanceLeft), durationRef.current);
+
+      currentPosirionRef.current += increment;
+
+      carRef.current.style.left = `${currentPosirionRef.current}px`;
+
+      if (currentPosirionRef.current >= distance) {
+        cancelAnimationFrame(animationRef.current!);
+        setEngineStatus('stopped');
+        animationRef.current = null;
+        return;
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
     }
-  }
+  };
+
+  const handleStartEngine = async () => {
+    const response = await requests.startStopEngine(car.id, 'started').then((res) => {
+      const durationMin = (res.distance / res.velocity) / 1000;
+      durationRef.current = durationMin;
+    });
+    setEngineStatus('started')
+    currentPosirionRef.current = 0;
+    animate();
+
+    const drive = await requests.driveEngine(car.id).then((res) => {
+      if(!res.success) {
+        handleStopEngine();
+      }
+    })
+  };
 
   const handleStopEngine = async () => {
-    if(engineStatus.current === 'drive') {
-      engineStatus.current = 'stopped';
+    if (animationRef.current) {
       const response = await requests.startStopEngine(car.id, 'stopped');
-    }
+      cancelAnimationFrame(animationRef.current!);
+      setEngineStatus('stopped');
+      animationRef.current = null;
+    };
   }
 
-  const handleEngine = async (status: 'started' | 'stopped') => {
-    if(engineStatus.current === 'stopped') {
-      engineStatus.current = 'started';
-      const response = await requests.startStopEngine(car.id, status);
-      const { distance, velocity } = response;
-      engineStatus.current = 'drive';
-      const driveResp = await requests.driveEngine(car.id);
-      const duration = (distance / velocity) / 1000;
-      const parentContainer = document.querySelector('.racing-road')?.clientWidth || 0;
-
-      const updatePosition = (speed: number) => {
-        if(carPosition.current < parentContainer) {
-          carPosition.current += speed;
-        } else {
-          clearInterval(intervalRef.current!);
-          engineStatus.current = 'stopped';
-        }
-      };
-      setInterval(updatePosition, 100) as unknown as NodeJS.Timeout;
-      console.log(carPosition.current)
+  const resetPosition = () => {
+    if (carRef.current) {
+      setEngineStatus('stopped');
+      currentPosirionRef.current = 0;
+      carRef.current.style.left = `${0}px`;
     }
-  }
+  };
 
   const handleDelete = (id: number): void => {
     deleteCar(id);
@@ -82,21 +100,20 @@ function RacingLine({ car, select, onSelect }: Props) {
         <div className="side-btn-container race-btn">
           <Button
           title="Start"
-          onClick={() => handleEngine('started')}
+          onClick={() => handleStartEngine()}
+          disabled={engineStatus !== 'stopped'}
           />
           <Button
           title="Stop"
-          onClick={() => handleEngine('stopped')}
+          onClick={() => handleStopEngine()}
+          disabled={engineStatus === 'stopped'}
           />
         </div>
         <div className="racing-road">
           <div
+          ref={carRef}
           id={`${car.id}`}
-          className={`car ${engineStatus.current === 'drive' ? 'car-animation' : ''}`}
-          style={{
-            transform: `translateX(${carPosition.current}px)`,
-
-          }}
+          className={`car`}
           >
             <FaCarSide fontSize="2em" color={car.color} />
           </div>
@@ -106,5 +123,6 @@ function RacingLine({ car, select, onSelect }: Props) {
     </div>
   );
 }
+
 
 export default RacingLine;
