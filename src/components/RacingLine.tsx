@@ -11,9 +11,12 @@ type Props = {
     car: CarRace,
     select: boolean,
     onSelect: (id: number) => void,
+    startRace: boolean,
+    stopRace: () => void,
+    onFinish: (id: number, time: number, name: string) => void
 }
 
-function RacingLine({ car, select, onSelect }: Props) {
+function RacingLine({ car, select, onSelect, startRace, stopRace, onFinish }: Props) {
   const carRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
   const durationRef = useRef<number>(0);
@@ -26,36 +29,58 @@ function RacingLine({ car, select, onSelect }: Props) {
     return () => cancelAnimationFrame(animationRef.current!);
   }, []);
 
-  const animate = () => {
-    if (carRef.current) {
-      const distanceLeft = distance - car.position - 50;
-      const increment = Math.min(Math.abs(distanceLeft), durationRef.current);
-
-      car.position += increment;
-
-      carRef.current.style.left = `${car.position}px`;
-
-      if (car.position >= distance) {
-        cancelAnimationFrame(animationRef.current!);
-        setEngineStatus('stopped');
-        animationRef.current = null;
-        return;
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
+  useEffect(() => {
+    if (startRace && engineStatus !== 'started') {
+      handleStartEngine();
     }
-  };
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+      handleStopEngine();
+    };
+  }, [startRace]);
+
+  const animate = (duration: number) => {
+    const start = performance.now();
+    const initialPosition = 0;
+    const finishLine = distance - 50;
+
+    const frame = (now: number) => {
+        const elapsedTime = now - start;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const currentPosition = initialPosition + (finishLine - initialPosition) * progress;
+
+        if (carRef.current) {
+            carRef.current.style.left = `${currentPosition}px`;
+        }
+
+        if (progress < 1) {
+            animationRef.current = requestAnimationFrame(frame);
+        } else {
+            console.log(`Yay! ${car.name} finished with ${duration / 1000}s!`);
+            onFinish(car.id, (durationRef.current / 1000), car.name);
+            stopRace();
+            handleStopEngine();
+        }
+    };
+
+    animationRef.current = requestAnimationFrame(frame);
+};
 
   const handleStartEngine = async () => {
+    setEngineStatus('started');
     const response = await requests.startStopEngine(car.id, 'started').then((res) => {
-      const durationMin = (res.distance / res.velocity) / 1000;
+      const durationMin = (res.distance / res.velocity);
       durationRef.current = durationMin;
     });
-    setEngineStatus('started')
-    animate();
-
+    setEngineStatus('drive');
+    animate(durationRef.current);
     const drive = await requests.driveEngine(car.id).then((res) => {
       if(!res.success) {
+        console.log(`${car.name}'s engine broke`);
         handleStopEngine();
       }
     })
@@ -63,10 +88,11 @@ function RacingLine({ car, select, onSelect }: Props) {
 
   const handleStopEngine = async () => {
     if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current!);
-      const response = await requests.startStopEngine(car.id, 'stopped');
       setEngineStatus('stopped');
+      cancelAnimationFrame(animationRef.current!);
       animationRef.current = null;
+      const response = await requests.startStopEngine(car.id, 'stopped');
+      return;
     };
   }
 
@@ -104,7 +130,7 @@ function RacingLine({ car, select, onSelect }: Props) {
           ref={carRef}
           id={`${car.id}`}
           className={`car`}
-          style={{ left: `${car.position}px` }}
+          style={{ left: 0 }}
           >
             <FaCarSide fontSize="2em" color={car.color} />
           </div>
