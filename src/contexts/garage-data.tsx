@@ -28,7 +28,6 @@ export function GarageProvider({ children }: { children: ReactNode}) {
         const newCar: CarRace = {
           ...car,
           position: 0,
-          animate: false
         }
         carData[index] = newCar;
     })
@@ -46,7 +45,6 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       const newCar: CarRace = {
         ...car,
         position: 0,
-        animate: false
       }
       carData[index] = newCar;
   })
@@ -77,7 +75,6 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       const newCar: CarRace = {
         ...car,
         position: 0,
-        animate: false
       }
       carData[index] = newCar;
   })
@@ -86,11 +83,18 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   };
 
   const updatePosition = (position: number) => {
-    const pageCars: CarRace[] = [];
-    cars.forEach((car, index) => {
-      pageCars[index] = {...car, position: position};
+    const carsPage: CarRace[] = cars.map(car => ({
+      ...car,
+      position: position,
+    }));
+    setCars(carsPage);
+
+    carsPage.forEach((car) => {
+      const elem = document.getElementById(`${car.id}`);
+      if(elem) {
+        elem.style.left = `${position}px`;
+      }
     })
-    setCars(pageCars);
   }
 
   const generateCar = () => {
