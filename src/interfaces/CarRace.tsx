@@ -3,7 +3,6 @@ interface CarRace {
     color: string,
     id: number,
     position: number,
-    animate: boolean,
 }
 
 export default CarRace;
