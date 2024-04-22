@@ -2,8 +2,8 @@ import {
   ReactNode, createContext, useState, useEffect,
 } from 'react';
 import requests from '../utils/requests';
-import Car from '../interfaces/Car';
 import CreateCar from '../interfaces/CreateCar';
+import CarRace from '../interfaces/CarRace';
 import Pagination from '../interfaces/Pagination';
 import { GarageType } from '../interfaces/GarageType';
 import { carBrands, carClass } from '../constants/CarConstants';
@@ -11,7 +11,7 @@ import { carBrands, carClass } from '../constants/CarConstants';
 export const GarageDataContext = createContext<GarageType | null>(null);
 
 export function GarageProvider({ children }: { children: ReactNode}) {
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<CarRace[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     limit: 7,
@@ -22,7 +22,17 @@ export function GarageProvider({ children }: { children: ReactNode}) {
     const getCars = async () => {
       const response = await requests.getCars(pagination.page, pagination.limit);
       const { data, total } = response;
-      setCars(data);
+
+      const carData: CarRace[] = [];
+      data.forEach(async (car, index) => {
+        const newCar: CarRace = {
+          ...car,
+          position: 0,
+          animate: false
+        }
+        carData[index] = newCar;
+    })
+      setCars(carData);
       setPagination({ ...pagination, total });
     };
     getCars();
@@ -31,7 +41,16 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   const updateList = async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
-    setCars(data);
+    const carData: CarRace[] = [];
+    data.forEach(async (car, index) => {
+      const newCar: CarRace = {
+        ...car,
+        position: 0,
+        animate: false
+      }
+      carData[index] = newCar;
+  })
+    setCars(carData);
     setPagination({ ...pagination, total });
   }
 
@@ -53,9 +72,26 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   const changePagination = async (page: number, limit: number) => {
     const response = await requests.getCars(page, limit);
     const { data } = response;
-    setCars(data);
+    const carData: CarRace[] = [];
+    data.forEach(async (car, index) => {
+      const newCar: CarRace = {
+        ...car,
+        position: 0,
+        animate: false
+      }
+      carData[index] = newCar;
+  })
+    setCars(carData);
     setPagination({ ...pagination, page });
   };
+
+  const updatePosition = (position: number) => {
+    const pageCars: CarRace[] = [];
+    cars.forEach((car, index) => {
+      pageCars[index] = {...car, position: position};
+    })
+    setCars(pageCars);
+  }
 
   const generateCar = () => {
     const brandIndex = Math.floor(Math.random() * carBrands.length);
@@ -79,7 +115,7 @@ export function GarageProvider({ children }: { children: ReactNode}) {
 
   return (
     <GarageDataContext.Provider value={{
-      cars, createCar, deleteCar, updateCar, pagination, changePagination, generateCars,
+      cars, createCar, deleteCar, updateCar, pagination, changePagination, generateCars, updatePosition,
     }}
     >
       {children}

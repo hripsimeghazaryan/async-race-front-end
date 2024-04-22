@@ -7,18 +7,27 @@ import PaginationComp from '../components/Pagination';
 import { GarageDataContext } from '../contexts/garage-data';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
-import { Typography } from 'antd';
 import './Garage.css';
 
 function Garage() {
   const {
-    createCar, updateCar, pagination, changePagination, generateCars,
+    createCar, updateCar, pagination, changePagination, generateCars, updatePosition,
   } = useContext(GarageDataContext) as GarageType;
   const [newName, setNewName] = useState<string>('');
   const [newColor, setNewColor] = useState<string>('#ffffff');
   const [updateName, setUpdateName] = useState<string>('');
   const [updateColor, setUpdateColor] = useState<string>('#ffffff');
   const [toUpdate, setToUpdate] = useState<number | null>(null);
+
+  const [race, setRace] = useState<boolean>(false);
+
+  const handleRace = () => {
+    setRace(true);
+  }
+
+  const resetCars = () => {
+    updatePosition(0);
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -89,8 +98,8 @@ function Garage() {
           </form>
         </div>
         <div className="car-racing-btns">
-          <Button title="Start Race" onClick={() => console.log("hesa")}/>
-          <Button title="Reset" onClick={() => console.log("hesa")}/>
+          <Button title="Start Race" onClick={() => handleRace()}/>
+          <Button title="Reset" onClick={() => resetCars()}/>
         </div>
       </div>
       <div className="racing-track-container">

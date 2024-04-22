@@ -1,22 +1,21 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { FaCarSide } from 'react-icons/fa6';
 import Button from './Button';
-import Car from '../interfaces/Car';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
 import { GarageDataContext } from '../contexts/garage-data';
+import CarRace from '../interfaces/CarRace';
 import './RacingLine.css';
 
 type Props = {
-    car: Car,
+    car: CarRace,
     select: boolean,
-    onSelect: (id: number) => void
+    onSelect: (id: number) => void,
 }
 
 function RacingLine({ car, select, onSelect }: Props) {
   const carRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
-  const currentPosirionRef = useRef<number>(0);
   const durationRef = useRef<number>(0);
   const [engineStatus, setEngineStatus] = useState<'started' | 'stopped' | 'drive'>('stopped');
   const { deleteCar } = useContext(GarageDataContext) as GarageType;
@@ -29,14 +28,14 @@ function RacingLine({ car, select, onSelect }: Props) {
 
   const animate = () => {
     if (carRef.current) {
-      const distanceLeft = distance - currentPosirionRef.current - 50;
+      const distanceLeft = distance - car.position - 50;
       const increment = Math.min(Math.abs(distanceLeft), durationRef.current);
 
-      currentPosirionRef.current += increment;
+      car.position += increment;
 
-      carRef.current.style.left = `${currentPosirionRef.current}px`;
+      carRef.current.style.left = `${car.position}px`;
 
-      if (currentPosirionRef.current >= distance) {
+      if (car.position >= distance) {
         cancelAnimationFrame(animationRef.current!);
         setEngineStatus('stopped');
         animationRef.current = null;
@@ -53,7 +52,6 @@ function RacingLine({ car, select, onSelect }: Props) {
       durationRef.current = durationMin;
     });
     setEngineStatus('started')
-    currentPosirionRef.current = 0;
     animate();
 
     const drive = await requests.driveEngine(car.id).then((res) => {
@@ -65,20 +63,12 @@ function RacingLine({ car, select, onSelect }: Props) {
 
   const handleStopEngine = async () => {
     if (animationRef.current) {
-      const response = await requests.startStopEngine(car.id, 'stopped');
       cancelAnimationFrame(animationRef.current!);
+      const response = await requests.startStopEngine(car.id, 'stopped');
       setEngineStatus('stopped');
       animationRef.current = null;
     };
   }
-
-  const resetPosition = () => {
-    if (carRef.current) {
-      setEngineStatus('stopped');
-      currentPosirionRef.current = 0;
-      carRef.current.style.left = `${0}px`;
-    }
-  };
 
   const handleDelete = (id: number): void => {
     deleteCar(id);
@@ -114,6 +104,7 @@ function RacingLine({ car, select, onSelect }: Props) {
           ref={carRef}
           id={`${car.id}`}
           className={`car`}
+          style={{ left: `${car.position}px` }}
           >
             <FaCarSide fontSize="2em" color={car.color} />
           </div>
