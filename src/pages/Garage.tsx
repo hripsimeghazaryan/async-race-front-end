@@ -25,7 +25,12 @@ function Garage() {
     setRace(true);
   }
 
+  const stopRace = () => {
+    setRace(false);
+  }
+
   const resetCars = () => {
+    stopRace();
     updatePosition(0);
   }
 
@@ -98,12 +103,12 @@ function Garage() {
           </form>
         </div>
         <div className="car-racing-btns">
-          <Button title="Start Race" onClick={() => handleRace()}/>
-          <Button title="Reset" onClick={() => resetCars()}/>
+          <Button title="Start Race" onClick={handleRace}/>
+          <Button title="Reset" onClick={resetCars}/>
         </div>
       </div>
       <div className="racing-track-container">
-        <RacingField toUpdate={handleUpdate} />
+        <RacingField toUpdate={handleUpdate} startRace={race} stopRace={stopRace} resetCars={resetCars} />
         <PaginationComp
         pagination={pagination}
         nextPage={() => handleNextPage(pagination.page, pagination.limit)}
