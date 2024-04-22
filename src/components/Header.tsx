@@ -9,7 +9,7 @@ interface HeaderProps {
 function Header({title, total}: HeaderProps) {
     return (
         <div className="page-header">
-            <Typography.Title className="page-title">Winners</Typography.Title>
+            <Typography.Title className="page-title">{title}</Typography.Title>
             <Typography.Text className="page-subtitle">total: {total}</Typography.Text>
       </div>
     )
