@@ -50,17 +50,10 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
       const newWinners = await requests.getWinners(pagination.page, pagination.limit);
       const { data, total } = newWinners;
       data.forEach(async (winner) => {
-        const car = await requests.getCar(winner.id);
-        const newWinner: WinnersData = {
-          id: winner.id,
-          name: car.name,
-          color: car.color,
-          time: winner.time,
-          wins: winner.wins
-        }
+        const newWinner = await toWinnersData(winner);
         setWinners([...winners, newWinner])
-        setPagination({ ...pagination, total });
     })
+    setPagination({ ...pagination, total });
     };
 
     const deleteWinner = async (id: number) => {
@@ -68,17 +61,10 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
       const newData = await requests.getWinners(pagination.page, pagination.limit);
       const { data, total } = newData;
       data.forEach(async (winner) => {
-        const car = await requests.getCar(winner.id);
-        const newWinner: WinnersData = {
-          id: winner.id,
-          name: car.name,
-          color: car.color,
-          time: winner.time,
-          wins: winner.wins
-        }
+        const newWinner = await toWinnersData(winner);
         setWinners([...winners, newWinner])
-        setPagination({ ...pagination, total });
-    })
+      })
+      setPagination({ ...pagination, total });
     };
 
     const updateWinner = async (winner: Winner) => {
@@ -86,35 +72,20 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
       const newData = await requests.getWinners(pagination.page, pagination.limit);
       const { data, total } = newData;
       data.forEach(async (winner) => {
-        const car = await requests.getCar(winner.id);
-        const newWinner: WinnersData = {
-          id: winner.id,
-          name: car.name,
-          color: car.color,
-          time: winner.time,
-          wins: winner.wins
-        }
+        const newWinner = await toWinnersData(winner);
         setWinners([...winners, newWinner])
-        setPagination({ ...pagination, total });
-    })
+      })
+      setPagination({ ...pagination, total });
     };
 
     const changePagination = async (page: number, limit: number) => {
       const response = await requests.getWinners(page, limit);
       const { data, total } = response;
       data.forEach(async (winner) => {
-        console.log(winner.id)
-        const car = await requests.getCar(winner.id);
-        const newWinner: WinnersData = {
-          id: winner.id,
-          name: car.name,
-          color: car.color,
-          time: winner.time,
-          wins: winner.wins
-        }
+        const newWinner = await toWinnersData(winner);
         setWinners([...winners, newWinner])
-        setPagination({ ...pagination, total });
-    })
+      })
+      setPagination({ ...pagination, total });
     };
 
     return (
