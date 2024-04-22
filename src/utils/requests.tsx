@@ -113,7 +113,7 @@ class Requests {
   };
 
   createWinner = async (winner: Winner) => {
-    const response = await fetch(`${this.url}/winners}`, {
+    const response = await fetch(`${this.url}/winners`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(winner),
