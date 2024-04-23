@@ -29,6 +29,10 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
   }, []);
 
   useEffect(() => {
+    if(!startRace) {
+      handleStopEngine();
+    }
+
     if (startRace && engineStatus !== 'started') {
       handleStartEngine();
     }
@@ -85,6 +89,10 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
   };
 
   const handleStopEngine = async () => {
+    if (!startRace) {
+      setEngineStatus('stopped');
+      const response = await requests.startStopEngine(car.id, 'stopped');
+    }
     if (animationRef.current) {
       setEngineStatus('stopped');
       cancelAnimationFrame(animationRef.current!);
