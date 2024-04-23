@@ -15,7 +15,7 @@ interface FinishedCar {
 }
 
 interface FieldProps {
-  toUpdate: (id: number) => void,
+  toUpdate: (id: number | null) => void,
   startRace: boolean,
   stopRace: () => void,
   resetCars: () => void,
@@ -40,7 +40,11 @@ function RacingField({toUpdate, startRace, stopRace, resetCars }: FieldProps) {
 
   const onSelect = (id: number) => {
     setIsSelected(isSelected === id ? null : id);
-    toUpdate(id);
+    if(isSelected === id) {
+      toUpdate(null);
+    } else {
+      toUpdate(id);
+    }
   };
 
   const handleFinishedCars = (id: number, time: number, name: string) => {
@@ -91,7 +95,6 @@ function RacingField({toUpdate, startRace, stopRace, resetCars }: FieldProps) {
               <RacingLine
               key={item.id}
               car={item}
-              select={isSelected === item.id}
               onSelect={onSelect}
               startRace={startRace}
               stopRace={stopRace}

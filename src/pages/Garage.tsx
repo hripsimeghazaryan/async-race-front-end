@@ -51,9 +51,14 @@ function Garage() {
     });
   };
 
-  const handleUpdate = async (id: number) => {
+  const handleUpdate = async (id: number | null) => {
     setToUpdate(id);
-    getCar(id);
+    if(id) {
+      getCar(id);
+    } else {
+      setUpdateName("");
+      setUpdateColor("#ffffff");
+    }
   };
 
   const handleUpdateCar = async (event: FormEvent<HTMLFormElement>) => {

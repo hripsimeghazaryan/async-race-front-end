@@ -9,14 +9,13 @@ import './RacingLine.css';
 
 type Props = {
     car: CarRace,
-    select: boolean,
     onSelect: (id: number) => void,
     startRace: boolean,
     stopRace: () => void,
     onFinish: (id: number, time: number, name: string) => void
 }
 
-function RacingLine({ car, select, onSelect, startRace, stopRace, onFinish }: Props) {
+function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
   const carRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
   const durationRef = useRef<number>(0);
@@ -100,7 +99,7 @@ function RacingLine({ car, select, onSelect, startRace, stopRace, onFinish }: Pr
   };
 
   return (
-    <div key={car.id} className={`line-container ${select ? 'selected' : ''}`}>
+    <div key={car.id} className="line-container">
       <div className="line line-dir">
         <div className="side-btn-container">
           <Button

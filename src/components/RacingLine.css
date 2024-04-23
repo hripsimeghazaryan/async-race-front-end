@@ -4,11 +4,6 @@
   border-left: none;
 }
 
-.line-container.selected {
-  border-top: 2px solid #8a2be2;
-  border-bottom: 2px solid #8a2be2;
-}
-
 .line {
   padding: 10px;
 }
@@ -33,10 +28,6 @@
 .car {
   position: relative;
   transition: transform 0.5s linear;
-}
-
-.car-animation {
-  animation: car-drive var(--velocity, 16ms) ease-in-out forwards;
 }
 
 .side-btn-container {
