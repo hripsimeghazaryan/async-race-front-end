@@ -1,11 +1,9 @@
 import path from 'path';
-import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
-import type { Configuration } from 'webpack';
+import * as webpack from 'webpack';
+import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-interface WebpackConfig extends Configuration, DevServerConfiguration {}
-
-const config: WebpackConfig = {
+const config: webpack.Configuration = {
   mode: 'development',
   entry: path.resolve(__dirname, './src/index.tsx'),
   output: {
@@ -39,6 +37,13 @@ const config: WebpackConfig = {
       template: './public/index.html',
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    port: 8080
+  }
 };
 
 export default config;
