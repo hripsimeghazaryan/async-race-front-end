@@ -18,7 +18,6 @@ function Garage() {
   const [updateName, setUpdateName] = useState<string>('');
   const [updateColor, setUpdateColor] = useState<string>('#ffffff');
   const [toUpdate, setToUpdate] = useState<number | null>(null);
-
   const [race, setRace] = useState<boolean>(false);
 
   const handleRace = () => {
@@ -108,7 +107,12 @@ function Garage() {
         </div>
       </div>
       <div className="racing-track-container">
-        <RacingField toUpdate={handleUpdate} startRace={race} stopRace={stopRace} resetCars={resetCars} />
+        <RacingField
+        toUpdate={handleUpdate}
+        startRace={race}
+        stopRace={stopRace}
+        resetCars={resetCars}
+        />
         <PaginationComp
         pagination={pagination}
         nextPage={() => handleNextPage(pagination.page, pagination.limit)}
