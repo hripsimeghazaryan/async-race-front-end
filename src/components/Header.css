@@ -1,22 +1,22 @@
 .page-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .page-title {
-    color: #fff !important;
-    text-shadow:
-      0 0 0px #fff,
-      0 0 5px #fff,
-      0 0 15px #fff,
-      0 0 20px #8a2be2,
-      0 0 25px #8a2be2,
-      0 0 30px #8a2be2,
-      0 0 40px #8a2be2,
-      0 0 45px #8a2be2;
+  color: #fff !important;
+  text-shadow:
+    0 0 0px #fff,
+    0 0 5px #fff,
+    0 0 15px #fff,
+    0 0 20px #8a2be2,
+    0 0 25px #8a2be2,
+    0 0 30px #8a2be2,
+    0 0 40px #8a2be2,
+    0 0 45px #8a2be2;
 }
 
 .page-subtitle {
-    color: #ffffff;
+  color: #ffffff;
 }
