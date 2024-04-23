@@ -55,6 +55,12 @@ class Requests {
       method: 'DELETE',
     });
 
+    try {
+      const delWinner = this.deleteWinner(id);
+    } catch (error) {
+      console.error(error);
+    }
+
     return;
   };
 
@@ -142,6 +148,15 @@ class Requests {
     const data: Winner = await response.json();
     return data;
   };
+
+  filterWinner = async (page: number, limit: number, sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
+    const response = await fetch(`${this.url}/winners?_sort=${sort}&_order=${order}&_page=${page}&_limit=${limit}`, {
+      method: 'GET',
+    });
+    const data: Winner[] = await response.json();
+    const total = parseInt((response.headers.get('X-Total-Count')) || '0', 10);
+    return { data, total };
+  }
 }
 
 const requests = new Requests();
