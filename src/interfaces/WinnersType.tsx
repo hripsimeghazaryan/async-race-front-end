@@ -9,4 +9,5 @@ export type WinnersType = {
     updateWinner: (winner: Winner) => void;
     pagination: Pagination;
     changePagination: (page: number, limit: number) => void;
+    sortWinners: (sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => void;
 }
