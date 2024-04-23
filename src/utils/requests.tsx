@@ -149,13 +149,12 @@ class Requests {
     return data;
   };
 
-  filterWinner = async (page: number, limit: number, sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
-    const response = await fetch(`${this.url}/winners?_sort=${sort}&_order=${order}&_page=${page}&_limit=${limit}`, {
+  sortWinners = async (page: number, limit: number, sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
+    const response = await fetch(`${this.url}/winners?_order=${order}&_sort=${sort}&_page=${page}&_limit=${limit}`, {
       method: 'GET',
     });
     const data: Winner[] = await response.json();
-    const total = parseInt((response.headers.get('X-Total-Count')) || '0', 10);
-    return { data, total };
+    return data;
   }
 }
 
