@@ -5,11 +5,12 @@ import PaginationComp from "../components/Pagination";
 import { useContext } from "react";
 import { WinnersType } from "../interfaces/WinnersType";
 import { WinnersDataContext } from "../contexts/winners-data";
+import WinnerField from "../components/WinnerField";
 import './Winners.css';
 
 
 function Winners() {
-  const { winners, pagination, changePagination } = useContext(WinnersDataContext) as WinnersType;
+  const { pagination, changePagination } = useContext(WinnersDataContext) as WinnersType;
 
   const handleNextPage = (page: number, limit: number) => {
     changePagination(page + 1, limit);
@@ -30,19 +31,7 @@ function Winners() {
           <Col span={4} order={4}>Wins</Col>
           <Col span={4} order={5}>Best Time (Seconds)</Col>
         </Row>
-        {
-          winners?.map((winner) => (
-            <Row key={winner.id} className="table-row">
-              <Col span={4} order={1}>{winner.id}</Col>
-              <Col span={4} order={2}>
-                <FaCarSide size="1.2rem" color={winner.color} />
-              </Col>
-              <Col span={4} order={3}>{winner.name}</Col>
-              <Col span={4} order={4}>{winner.wins}</Col>
-              <Col span={4} order={5}>{winner.time}</Col>
-            </Row>
-          ))
-        }
+        <WinnerField />
         <PaginationComp
         pagination={pagination}
         nextPage={() => handleNextPage(pagination.page, pagination.limit)}
