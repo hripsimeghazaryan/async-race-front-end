@@ -13,13 +13,13 @@ function WinnerLine({ id, name, color, wins, time }: Props) {
 
   return (
             <Row key={id} className="table-row">
-              <Col span={4} order={1}>{id}</Col>
-              <Col span={4} order={2}>
+              <Col className="column" span={4} order={1}>{id}</Col>
+              <Col className="column" span={4} order={2}>
                 <FaCarSide size="1.2rem" color={color} />
               </Col>
-              <Col span={4} order={3}>{name}</Col>
-              <Col span={4} order={4}>{wins}</Col>
-              <Col span={4} order={5}>{time}</Col>
+              <Col className="column" span={4} order={3}>{name}</Col>
+              <Col className="column" span={4} order={4}>{wins}</Col>
+              <Col className="column" span={4} order={5}>{time}</Col>
             </Row>
   );
 }
