@@ -58,6 +58,15 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
       getWinners();
     };
 
+    const sortWinners = async (sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
+      const response = await requests.sortWinners(pagination.page, pagination.limit, sort, order).then(async (data) => {
+        console.log(data);
+        const promises = data.map((winner) => toWinnersData(winner));
+        const newData: WinnersData[] = await Promise.all(promises);
+        setWinners(newData);
+      });
+    }
+
     const changePagination = async (page: number, limit: number) => {
       const response = await requests.getWinners(page, limit);
       const { data } = response;
@@ -69,7 +78,7 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
 
     return (
       <WinnersDataContext.Provider value={{
-        winners, createWinner, deleteWinner, updateWinner, pagination, changePagination,
+        winners, createWinner, deleteWinner, updateWinner, pagination, changePagination, sortWinners
       }}
       >
         {children}
