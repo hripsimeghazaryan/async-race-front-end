@@ -1,6 +1,25 @@
 {
-  "extends": ["airbnb", "airbnb/hooks", "airbnb-typescript"],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./typescript.json"
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "max-lines-per-function": ["error", 40],
+    "magic-numbers/no-magic-numbers": ["error", {
+      "ignore": [0, 1],
+      "ignoreArrayIndexes": true,
+      "enforceConst": true,
+      "detectObjects": false
+    }],
+    "@typescript-eslint/no-explicit-any": ["error"],
+    "no-magic-numbers": "off"
   }
 }
