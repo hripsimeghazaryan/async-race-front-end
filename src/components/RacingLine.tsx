@@ -60,7 +60,7 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
             animationRef.current = requestAnimationFrame(frame);
         } else {
             console.log(`Yay! ${car.name} finished with ${duration / 1000}s!`);
-            onFinish(car.id, (durationRef.current / 1000), car.name);
+            onFinish(car.id, +(durationRef.current / 1000).toFixed(2), car.name);
             handleStopEngine();
         }
     };
