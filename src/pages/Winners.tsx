@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
 import Header from "../components/Header";
 import PaginationComp from "../components/Pagination";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { WinnersType } from "../interfaces/WinnersType";
 import { WinnersDataContext } from "../contexts/winners-data";
 import WinnerField from "../components/WinnerField";
@@ -10,9 +10,9 @@ import './Winners.css';
 
 
 function Winners() {
-  const [idOrder, setIdOrder] = useState<'ASC' | 'DESC'>('DESC');
-  const [winsOrder, setWinsOrder] = useState<'ASC' | 'DESC'>('DESC');
-  const [timeOrder, setTimeOrder] = useState<'ASC' | 'DESC'>('DESC');
+  const [idOrder, setIdOrder] = usePersistency<'ASC' | 'DESC'>('order_id', 'DESC');
+  const [winsOrder, setWinsOrder] = usePersistency<'ASC' | 'DESC'>('order_wins', 'DESC');
+  const [timeOrder, setTimeOrder] = usePersistency<'ASC' | 'DESC'>('order_time', 'DESC');
   const { pagination, changePagination, sortWinners } = useContext(WinnersDataContext) as WinnersType;
 
   const handleNextPage = (page: number, limit: number) => {
@@ -29,13 +29,13 @@ function Winners() {
   }
 
   const handleWinsOrder = () => {
-    sortWinners('wins', idOrder);
-    setIdOrder(idOrder === 'ASC' ? 'DESC' : 'ASC')
+    sortWinners('wins', winsOrder);
+    setWinsOrder(winsOrder === 'ASC' ? 'DESC' : 'ASC')
   }
 
   const handleTimeOrder = () => {
-    sortWinners('time', idOrder);
-    setIdOrder(idOrder === 'ASC' ? 'DESC' : 'ASC')
+    sortWinners('time', timeOrder);
+    setTimeOrder(timeOrder === 'ASC' ? 'DESC' : 'ASC')
   }
 
   return (
