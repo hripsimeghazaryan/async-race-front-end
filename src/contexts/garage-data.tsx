@@ -19,7 +19,10 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   });
 
   useEffect(() => {
-    const getCars = async () => {
+    getCars();
+  }, []);
+
+      const getCars = async () => {
       const response = await requests.getCars(pagination.page, pagination.limit);
       const { data, total } = response;
 
@@ -34,8 +37,6 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       setCars(carData);
       setPagination({ ...pagination, total });
     };
-    getCars();
-  }, [JSON.stringify(cars), JSON.stringify(pagination)]);
 
   const updateList = async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);

@@ -19,19 +19,20 @@ export function WinnerProvider({ children }: { children: ReactNode}) {
     });
 
     useEffect(() => {
-      const getWinners = async () => {
-        const response = await requests.getWinners(pagination.page, pagination.limit);
-        const { data, total } = response;
-        const newData: WinnersData[] = [];
-        data.forEach(async (winner, index) => {
-            const newWinner = await toWinnersData(winner);
-            newData[index] = newWinner;
-        })
-        setWinners(newData);
-        setPagination({ ...pagination, total });
-      };
       getWinners();
-    }, [winners.toString]);
+    }, []);
+
+    const getWinners = async () => {
+      const response = await requests.getWinners(pagination.page, pagination.limit);
+      const { data, total } = response;
+      const newData: WinnersData[] = [];
+      data.forEach(async (winner, index) => {
+          const newWinner = await toWinnersData(winner);
+          newData[index] = newWinner;
+      })
+      setWinners(newData);
+      setPagination({ ...pagination, total });
+    };
 
     const toWinnersData = async (winner: Winner) => {
         const car: Car = await requests.getCar(winner.id);
