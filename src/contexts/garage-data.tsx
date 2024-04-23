@@ -3,7 +3,7 @@ import {
 } from 'react';
 import requests from '../utils/requests';
 import CreateCar from '../interfaces/CreateCar';
-import CarRace from '../interfaces/CarRace';
+import Car from '../interfaces/Car';
 import Pagination from '../interfaces/Pagination';
 import { GarageType } from '../interfaces/GarageType';
 import { carBrands, carClass } from '../constants/CarConstants';
@@ -11,7 +11,7 @@ import { carBrands, carClass } from '../constants/CarConstants';
 export const GarageDataContext = createContext<GarageType | null>(null);
 
 export function GarageProvider({ children }: { children: ReactNode}) {
-  const [cars, setCars] = useState<CarRace[]>([]);
+  const [cars, setCars] = useState<Car[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     limit: 7,
@@ -25,31 +25,14 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       const getCars = async () => {
       const response = await requests.getCars(pagination.page, pagination.limit);
       const { data, total } = response;
-
-      const carData: CarRace[] = [];
-      data.forEach((car, index) => {
-        const newCar: CarRace = {
-          ...car,
-          position: 0,
-        }
-        carData[index] = newCar;
-    })
-      setCars(carData);
+      setCars(data);
       setPagination({ ...pagination, total });
     };
 
   const updateList = async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
-    const carData: CarRace[] = [];
-    data.forEach((car, index) => {
-      const newCar: CarRace = {
-        ...car,
-        position: 0,
-      }
-      carData[index] = newCar;
-    })
-    setCars(carData);
+    setCars(data);
     setPagination({ ...pagination, total });
   }
 
@@ -71,26 +54,12 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   const changePagination = async (page: number, limit: number) => {
     const response = await requests.getCars(page, limit);
     const { data } = response;
-    const carData: CarRace[] = [];
-    data.forEach((car, index) => {
-      const newCar: CarRace = {
-        ...car,
-        position: 0,
-      }
-      carData[index] = newCar;
-  })
-    setCars(carData);
+    setCars(data);
     setPagination({ ...pagination, page });
   };
 
   const updatePosition = (position: number) => {
-    const carsPage: CarRace[] = cars.map(car => ({
-      ...car,
-      position: position,
-    }));
-    setCars(carsPage);
-
-    carsPage.forEach((car) => {
+    cars.forEach((car) => {
       const elem = document.getElementById(`${car.id}`);
       if(elem) {
         elem.style.left = `${position}px`;

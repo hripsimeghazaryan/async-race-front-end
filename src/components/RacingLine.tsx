@@ -4,11 +4,11 @@ import Button from './Button';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
 import { GarageDataContext } from '../contexts/garage-data';
-import CarRace from '../interfaces/CarRace';
+import Car from '../interfaces/Car';
 import './RacingLine.css';
 
 type Props = {
-    car: CarRace,
+    car: Car,
     onSelect: (id: number) => void,
     startRace: boolean,
     stopRace: () => void,
