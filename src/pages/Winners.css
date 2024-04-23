@@ -12,3 +12,7 @@
   color: #8a2be2;
   font-size: large;
 }
+
+.column {
+  text-align: center !important;
+}
