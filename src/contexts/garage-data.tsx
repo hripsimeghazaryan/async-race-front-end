@@ -27,7 +27,7 @@ export function GarageProvider({ children }: { children: ReactNode}) {
       const { data, total } = response;
 
       const carData: CarRace[] = [];
-      data.forEach(async (car, index) => {
+      data.forEach((car, index) => {
         const newCar: CarRace = {
           ...car,
           position: 0,
@@ -42,13 +42,13 @@ export function GarageProvider({ children }: { children: ReactNode}) {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
     const carData: CarRace[] = [];
-    data.forEach(async (car, index) => {
+    data.forEach((car, index) => {
       const newCar: CarRace = {
         ...car,
         position: 0,
       }
       carData[index] = newCar;
-  })
+    })
     setCars(carData);
     setPagination({ ...pagination, total });
   }
@@ -72,7 +72,7 @@ export function GarageProvider({ children }: { children: ReactNode}) {
     const response = await requests.getCars(page, limit);
     const { data } = response;
     const carData: CarRace[] = [];
-    data.forEach(async (car, index) => {
+    data.forEach((car, index) => {
       const newCar: CarRace = {
         ...car,
         position: 0,
