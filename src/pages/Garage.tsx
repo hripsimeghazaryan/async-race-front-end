@@ -7,17 +7,18 @@ import PaginationComp from '../components/Pagination';
 import { GarageDataContext } from '../contexts/garage-data';
 import requests from '../utils/requests';
 import { GarageType } from '../interfaces/GarageType';
+import usePersisteny from '../hooks/Persistency';
 import './Garage.css';
 
 function Garage() {
   const {
     createCar, updateCar, pagination, changePagination, generateCars, updatePosition,
   } = useContext(GarageDataContext) as GarageType;
-  const [newName, setNewName] = useState<string>('');
-  const [newColor, setNewColor] = useState<string>('#ffffff');
-  const [updateName, setUpdateName] = useState<string>('');
-  const [updateColor, setUpdateColor] = useState<string>('#ffffff');
-  const [toUpdate, setToUpdate] = useState<number | null>(null);
+  const [newName, setNewName] = usePersisteny<string>('new_name', '');
+  const [newColor, setNewColor] = usePersisteny<string>('new_color', '#ffffff');
+  const [updateName, setUpdateName] = usePersisteny<string>('update_name', '');
+  const [updateColor, setUpdateColor] = usePersisteny<string>('update_color', '#ffffff');
+  const [toUpdate, setToUpdate] = usePersisteny<number | null>('update_id', null);
   const [race, setRace] = useState<boolean>(false);
 
   const handleRace = () => {
