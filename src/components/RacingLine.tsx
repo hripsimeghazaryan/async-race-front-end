@@ -62,7 +62,6 @@ function RacingLine({ car, select, onSelect, startRace, stopRace, onFinish }: Pr
         } else {
             console.log(`Yay! ${car.name} finished with ${duration / 1000}s!`);
             onFinish(car.id, (durationRef.current / 1000), car.name);
-            stopRace();
             handleStopEngine();
         }
     };
