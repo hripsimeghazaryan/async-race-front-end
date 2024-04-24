@@ -1,5 +1,5 @@
 import {
-  ReactNode, createContext, useState, useEffect,
+  ReactNode, createContext, useState, useEffect, useCallback, useMemo,
 } from 'react';
 import requests from '../utils/requests';
 import CreateCar from '../interfaces/CreateCar';
@@ -10,7 +10,7 @@ import { carBrands, carClass } from '../constants/CarConstants';
 
 export const GarageDataContext = createContext<GarageType | null>(null);
 
-export function GarageProvider({ children }: { children: ReactNode}) {
+export function GarageProvider({ children }: { children: ReactNode }) {
   const [cars, setCars] = useState<Car[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -18,23 +18,23 @@ export function GarageProvider({ children }: { children: ReactNode}) {
     total: 0,
   });
 
+  const getCars = async () => {
+    const response = await requests.getCars(pagination.page, pagination.limit);
+    const { data, total } = response;
+    setCars(data);
+    setPagination({ ...pagination, total });
+  };
+
   useEffect(() => {
     getCars();
   }, []);
-
-      const getCars = async () => {
-      const response = await requests.getCars(pagination.page, pagination.limit);
-      const { data, total } = response;
-      setCars(data);
-      setPagination({ ...pagination, total });
-    };
 
   const updateList = async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
     setCars(data);
     setPagination({ ...pagination, total });
-  }
+  };
 
   const createCar = async (carData: CreateCar) => {
     const response = await requests.createCar(carData);
@@ -61,11 +61,11 @@ export function GarageProvider({ children }: { children: ReactNode}) {
   const updatePosition = (position: number) => {
     cars.forEach((car) => {
       const elem = document.getElementById(`${car.id}`);
-      if(elem) {
+      if (elem) {
         elem.style.left = `${position}px`;
       }
-    })
-  }
+    });
+  };
 
   const generateCar = () => {
     const brandIndex = Math.floor(Math.random() * carBrands.length);
@@ -89,7 +89,14 @@ export function GarageProvider({ children }: { children: ReactNode}) {
 
   return (
     <GarageDataContext.Provider value={{
-      cars, createCar, deleteCar, updateCar, pagination, changePagination, generateCars, updatePosition,
+      cars,
+      createCar,
+      deleteCar,
+      updateCar,
+      pagination,
+      changePagination,
+      generateCars,
+      updatePosition,
     }}
     >
       {children}

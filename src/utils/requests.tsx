@@ -60,8 +60,6 @@ class Requests {
     } catch (error) {
       console.error(error);
     }
-
-    return;
   };
 
   updateCar = async (id: number, carData: CreateCar) => {
@@ -84,24 +82,24 @@ class Requests {
   startStopEngine = async (id: number, status: 'started' | 'stopped') => {
     const response = await fetch(`${this.url}/engine?id=${id}&status=${status}`, {
       method: 'PATCH',
-    })
+    });
 
     const data: Engine = await response.json();
     return data;
-  }
+  };
 
   driveEngine = async (id: number, status: string = 'drive') => {
     const response = await fetch(`${this.url}/engine?id=${id}&status=${status}`, {
       method: 'PATCH',
-    })
-
-    if(response.status !== 200) {
+    });
+    const success = 200;
+    if (response.status !== success) {
       return { success: false };
     }
 
     const data: { success: boolean } = await response.json();
     return data;
-  }
+  };
 
   getWinners = async (page: number, limit: number) => {
     const response = await fetch(`${this.url}/winners?_page=${page}&_limit=${limit}`, {
@@ -131,15 +129,13 @@ class Requests {
 
   deleteWinner = async (id: number) => {
     const response = await fetch(`${this.url}/winners/${id}`, { method: 'DELETE' });
-
-    return;
   };
 
   updateWinner = async (winner: Winner) => {
     const winnerData = {
       wins: winner.wins,
       time: winner.time,
-    }
+    };
     const response = await fetch(`${this.url}/winners/${winner.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -155,7 +151,7 @@ class Requests {
     });
     const data: Winner[] = await response.json();
     return data;
-  }
+  };
 }
 
 const requests = new Requests();

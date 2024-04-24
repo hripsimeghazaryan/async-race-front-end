@@ -1,4 +1,6 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import {
+  useState, useEffect, Dispatch, SetStateAction,
+} from 'react';
 
 function usePersistency<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
   const [state, setState] = useState<T>(() => {

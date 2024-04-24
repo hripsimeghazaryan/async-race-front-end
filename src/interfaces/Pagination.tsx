@@ -1,7 +1,7 @@
 interface Pagination {
-    page: number,
-    limit: number,
-    total: number
+  page: number,
+  limit: number,
+  total: number
 }
 
 export default Pagination;

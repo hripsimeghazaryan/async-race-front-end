@@ -23,16 +23,16 @@ function Garage() {
 
   const handleRace = () => {
     setRace(true);
-  }
+  };
 
   const stopRace = () => {
     setRace(false);
-  }
+  };
 
   const resetCars = () => {
     stopRace();
     updatePosition(0);
-  }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,11 +54,11 @@ function Garage() {
 
   const handleUpdate = async (id: number | null) => {
     setToUpdate(id);
-    if(id) {
+    if (id) {
       getCar(id);
     } else {
-      setUpdateName("");
-      setUpdateColor("#ffffff");
+      setUpdateName('');
+      setUpdateColor('#ffffff');
     }
   };
 
@@ -90,7 +90,7 @@ function Garage() {
 
   return (
     <div className="page-container">
-      <Header title={"Garage"} total={pagination.total} />
+      <Header title="Garage" total={pagination.total} />
       <div className="cars-modify-container">
         <Button title="Generate" onClick={() => handleGenerateCars(10)} className="modify-item" />
         <div className="create-car-container modify-item">
@@ -108,21 +108,21 @@ function Garage() {
           </form>
         </div>
         <div className="car-racing-btns">
-          <Button title="Start Race" onClick={handleRace}/>
-          <Button title="Reset" onClick={resetCars}/>
+          <Button title="Start Race" onClick={handleRace} />
+          <Button title="Reset" onClick={resetCars} />
         </div>
       </div>
       <div className="racing-track-container">
         <RacingField
-        toUpdate={handleUpdate}
-        startRace={race}
-        stopRace={stopRace}
-        resetCars={resetCars}
+          toUpdate={handleUpdate}
+          startRace={race}
+          stopRace={stopRace}
+          resetCars={resetCars}
         />
         <PaginationComp
-        pagination={pagination}
-        nextPage={() => handleNextPage(pagination.page, pagination.limit)}
-        previousPage={() => handlePrevPage(pagination.page, pagination.limit)}
+          pagination={pagination}
+          nextPage={() => handleNextPage(pagination.page, pagination.limit)}
+          previousPage={() => handlePrevPage(pagination.page, pagination.limit)}
         />
       </div>
     </div>

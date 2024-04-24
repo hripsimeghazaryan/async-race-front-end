@@ -1,4 +1,6 @@
-import { useState, useContext, useRef, useEffect } from 'react';
+import {
+  useState, useContext, useRef, useEffect,
+} from 'react';
 import { FaCarSide } from 'react-icons/fa6';
 import Button from './Button';
 import requests from '../utils/requests';
@@ -8,14 +10,15 @@ import Car from '../interfaces/Car';
 import './RacingLine.css';
 
 type Props = {
-    car: Car,
-    onSelect: (id: number) => void,
-    startRace: boolean,
-    stopRace: () => void,
-    onFinish: (id: number, time: number, name: string) => void
-}
+  car: Car,
+  onSelect: (id: number) => void,
+  startRace: boolean,
+  onFinish: (id: number, time: number, name: string) => void
+};
 
-function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
+function RacingLine({
+  car, onSelect, startRace, onFinish,
+}: Props) {
   const carRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
   const durationRef = useRef<number>(0);
@@ -24,12 +27,10 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
 
   const distance = (carRef.current?.parentElement?.offsetWidth) || 0;
 
-  useEffect(() => {
-    return () => cancelAnimationFrame(animationRef.current!);
-  }, []);
+  useEffect(() => () => cancelAnimationFrame(animationRef.current!), []);
 
   useEffect(() => {
-    if(!startRace) {
+    if (!startRace) {
       handleStopEngine();
     }
 
@@ -52,25 +53,24 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
     const finishLine = distance - 50;
 
     const frame = (now: number) => {
-        const elapsedTime = now - start;
-        const progress = Math.min(elapsedTime / duration, 1);
-        const currentPosition = initialPosition + (finishLine - initialPosition) * progress;
+      const elapsedTime = now - start;
+      const progress = Math.min(elapsedTime / duration, 1);
+      const currentPosition = initialPosition + (finishLine - initialPosition) * progress;
 
-        if (carRef.current) {
-            carRef.current.style.left = `${currentPosition}px`;
-        }
+      if (carRef.current) {
+        carRef.current.style.left = `${currentPosition}px`;
+      }
 
-        if (progress < 1) {
-            animationRef.current = requestAnimationFrame(frame);
-        } else {
-            console.log(`Yay! ${car.name} finished with ${duration / 1000}s!`);
-            onFinish(car.id, +(durationRef.current / 1000).toFixed(2), car.name);
-            handleStopEngine();
-        }
+      if (progress < 1) {
+        animationRef.current = requestAnimationFrame(frame);
+      } else {
+        onFinish(car.id, +(durationRef.current / 1000).toFixed(2), car.name);
+        handleStopEngine();
+      }
     };
 
     animationRef.current = requestAnimationFrame(frame);
-};
+  };
 
   const handleStartEngine = async () => {
     setEngineStatus('started');
@@ -81,11 +81,10 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
     setEngineStatus('drive');
     animate(durationRef.current);
     const drive = await requests.driveEngine(car.id).then((res) => {
-      if(!res.success) {
-        console.log(`${car.name}'s engine broke`);
+      if (!res.success) {
         handleStopEngine();
       }
-    })
+    });
   };
 
   const handleStopEngine = async () => {
@@ -98,9 +97,8 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
       cancelAnimationFrame(animationRef.current!);
       animationRef.current = null;
       const response = await requests.startStopEngine(car.id, 'stopped');
-      return;
-    };
-  }
+    }
+  };
 
   const handleDelete = (id: number): void => {
     deleteCar(id);
@@ -111,32 +109,32 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
       <div className="line line-dir">
         <div className="side-btn-container">
           <Button
-          title="Select"
-          onClick={() => onSelect(car.id)}
+            title="Select"
+            onClick={() => onSelect(car.id)}
           />
           <Button
-          title="Delete"
-          onClick={() => handleDelete(car.id)}
+            title="Delete"
+            onClick={() => handleDelete(car.id)}
           />
         </div>
         <div className="side-btn-container race-btn">
           <Button
-          title="Start"
-          onClick={() => handleStartEngine()}
-          disabled={engineStatus !== 'stopped'}
+            title="Start"
+            onClick={() => handleStartEngine()}
+            disabled={engineStatus !== 'stopped'}
           />
           <Button
-          title="Stop"
-          onClick={() => handleStopEngine()}
-          disabled={engineStatus === 'stopped'}
+            title="Stop"
+            onClick={() => handleStopEngine()}
+            disabled={engineStatus === 'stopped'}
           />
         </div>
         <div className="racing-road">
           <div
-          ref={carRef}
-          id={`${car.id}`}
-          className={`car`}
-          style={{ left: 0 }}
+            ref={carRef}
+            id={`${car.id}`}
+            className="car"
+            style={{ left: 0 }}
           >
             <FaCarSide fontSize="2em" color={car.color} />
           </div>
@@ -146,6 +144,5 @@ function RacingLine({ car, onSelect, startRace, onFinish }: Props) {
     </div>
   );
 }
-
 
 export default RacingLine;

@@ -7,12 +7,14 @@ interface ButtonProps {
   disabled?: boolean
 }
 
-function Button({ title, onClick, className, disabled }: ButtonProps) {
+function Button({
+  title, onClick, className, disabled,
+}: ButtonProps) {
   return (
     <button
-    className={`btn-style btn-hover ${className || ''}`}
-    onClick={onClick}
-    disabled={disabled}
+      className={`btn-style btn-hover ${className || ''}`}
+      onClick={onClick}
+      disabled={disabled}
     >
       {title}
     </button>
