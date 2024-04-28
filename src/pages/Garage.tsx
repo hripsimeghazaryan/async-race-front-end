@@ -92,7 +92,7 @@ function Garage() {
     <div className="page-container">
       <Header title="Garage" total={pagination.total} />
       <div className="cars-modify-container">
-        <Button title="Generate" onClick={() => handleGenerateCars(10)} className="modify-item" />
+        <Button title="Generate" onClick={() => handleGenerateCars(100)} className="modify-item" />
         <div className="create-car-container modify-item">
           <form onSubmit={(event) => handleSubmit(event)} className="car-form create-form">
             <input type="text" value={newName} onChange={(event) => setNewName(event?.target.value)} />
