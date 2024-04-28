@@ -18,54 +18,56 @@ export function GarageProvider({ children }: { children: ReactNode }) {
     total: 0,
   });
 
-  const getCars = async () => {
+  const getCars = useCallback(async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
     setCars(data);
-    setPagination({ ...pagination, total });
-  };
+    setPagination((prev) => ({ ...prev, total }));
+  }, [pagination]);
 
   useEffect(() => {
     getCars();
-  }, []);
+  }, [pagination.page]);
 
-  const updateList = async () => {
+  const updateList = useCallback(async () => {
     const response = await requests.getCars(pagination.page, pagination.limit);
     const { data, total } = response;
     setCars(data);
-    setPagination({ ...pagination, total });
-  };
+    setPagination((prev) => ({ ...prev, total }));
+  }, [pagination]);
 
-  const createCar = async (carData: CreateCar) => {
+  const createCar = useCallback(async (carData: CreateCar) => {
     const response = await requests.createCar(carData);
     updateList();
-  };
+  }, [updateList]);
 
-  const deleteCar = async (id: number) => {
+  const deleteCar = useCallback(async (id: number) => {
     const response = await requests.deleteCar(id);
     updateList();
-  };
+  }, [updateList]);
 
-  const updateCar = async (id: number, carData: CreateCar) => {
+  const updateCar = useCallback(async (id: number, carData: CreateCar) => {
     const response = await requests.updateCar(id, carData);
     updateList();
-  };
+  }, [updateList]);
 
-  const changePagination = async (page: number, limit: number) => {
-    const response = await requests.getCars(page, limit);
-    const { data } = response;
-    setCars(data);
-    setPagination({ ...pagination, page });
-  };
+  const changePagination = useCallback(async (page: number, limit: number) => {
+    if (page !== pagination.page || limit !== pagination.limit) {
+      const response = await requests.getCars(page, limit);
+      const { data } = response;
+      setCars(data);
+      setPagination((prev) => ({ ...prev, page }));
+    }
+  }, [pagination]);
 
-  const updatePosition = (position: number) => {
+  const updatePosition = useCallback((position: number) => {
     cars.forEach((car) => {
       const elem = document.getElementById(`${car.id}`);
       if (elem) {
         elem.style.left = `${position}px`;
       }
     });
-  };
+  }, [cars]);
 
   const generateCar = () => {
     const brandIndex = Math.floor(Math.random() * carBrands.length);
@@ -76,7 +78,7 @@ export function GarageProvider({ children }: { children: ReactNode }) {
     return { name, color };
   };
 
-  const generateCars = async (count: number) => {
+  const generateCars = useCallback(async (count: number) => {
     for (let i = 0; i < count; i += 1) {
       const { name, color } = generateCar();
       const carData: CreateCar = {
@@ -85,10 +87,10 @@ export function GarageProvider({ children }: { children: ReactNode }) {
       };
       createCar(carData);
     }
-  };
+  }, [createCar]);
 
-  return (
-    <GarageDataContext.Provider value={{
+  const garageValueProps = useMemo(
+    () => ({
       cars,
       createCar,
       deleteCar,
@@ -97,8 +99,13 @@ export function GarageProvider({ children }: { children: ReactNode }) {
       changePagination,
       generateCars,
       updatePosition,
-    }}
-    >
+    }),
+    [cars, pagination, createCar, deleteCar,
+      updateCar, changePagination, generateCars, updatePosition],
+  );
+
+  return (
+    <GarageDataContext.Provider value={garageValueProps}>
       {children}
     </GarageDataContext.Provider>
   );

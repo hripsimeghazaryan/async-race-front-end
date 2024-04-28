@@ -18,18 +18,18 @@ export function WinnerProvider({ children }: { children: ReactNode }) {
     total: 0,
   });
 
-  const getWinners = async () => {
+  const getWinners = useCallback(async () => {
     const response = await requests.getWinners(pagination.page, pagination.limit);
     const { data, total } = response;
     const promises = data.map((winner) => toWinnersData(winner));
     const newData: WinnersData[] = await Promise.all(promises);
     setWinners(newData);
     setPagination({ ...pagination, total });
-  };
+  }, [pagination]);
 
   useEffect(() => {
     getWinners();
-  }, []);
+  }, [pagination.page]);
 
   const toWinnersData = async (winner: Winner) => {
     const car: Car = await requests.getCar(winner.id);
@@ -43,44 +43,54 @@ export function WinnerProvider({ children }: { children: ReactNode }) {
     return newWinner;
   };
 
-  const createWinner = async (winner: Winner) => {
+  const createWinner = useCallback(async (winner: Winner) => {
     const response = await requests.createWinner(winner);
     getWinners();
-  };
+  }, [getWinners]);
 
-  const deleteWinner = async (id: number) => {
+  const deleteWinner = useCallback(async (id: number) => {
     const response = await requests.deleteWinner(id);
     getWinners();
-  };
+  }, [getWinners]);
 
-  const updateWinner = async (winner: Winner) => {
+  const updateWinner = useCallback(async (winner: Winner) => {
     const response = await requests.updateWinner(winner);
     getWinners();
-  };
+  }, [getWinners]);
 
-  const sortWinners = async (sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
+  const sortWinners = useCallback(async (sort: 'id' | 'time' | 'wins', order: 'ASC' | 'DESC') => {
     const response = await requests.sortWinners(pagination.page, pagination.limit, sort, order)
       .then(async (data) => {
         const promises = data.map((winner) => toWinnersData(winner));
         const newData: WinnersData[] = await Promise.all(promises);
         setWinners(newData);
       });
-  };
+  }, [pagination.limit, pagination.page]);
 
-  const changePagination = async (page: number, limit: number) => {
+  const changePagination = useCallback(async (page: number, limit: number) => {
     const response = await requests.getWinners(page, limit);
     const { data } = response;
     const promises = data.map((winner) => toWinnersData(winner));
     const newData: WinnersData[] = await Promise.all(promises);
     setWinners(newData);
     setPagination({ ...pagination, page });
-  };
+  }, [pagination]);
+
+  const winnersValueProps = useMemo(() => ({
+    winners,
+    createWinner,
+    deleteWinner,
+    updateWinner,
+    pagination,
+    changePagination,
+    sortWinners,
+  }), [
+    winners, createWinner, deleteWinner, updateWinner,
+    pagination, changePagination, sortWinners,
+  ]);
 
   return (
-    <WinnersDataContext.Provider value={{
-      winners, createWinner, deleteWinner, updateWinner, pagination, changePagination, sortWinners,
-    }}
-    >
+    <WinnersDataContext.Provider value={winnersValueProps}>
       {children}
     </WinnersDataContext.Provider>
   );
