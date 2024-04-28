@@ -1,5 +1,6 @@
+/* eslint-disable max-lines-per-function */
 import {
-  useState, useContext, useRef, useEffect,
+  useState, useContext, useRef, useEffect, useCallback,
 } from 'react';
 import { FaCarSide } from 'react-icons/fa6';
 import Button from './Button';
@@ -27,27 +28,34 @@ function RacingLine({
 
   const distance = (carRef.current?.parentElement?.offsetWidth) || 0;
 
-  useEffect(() => () => cancelAnimationFrame(animationRef.current!), []);
-
-  useEffect(() => {
-    if (!startRace) {
-      handleStopEngine();
-    }
-
-    if (startRace && engineStatus !== 'started') {
-      handleStartEngine();
-    }
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
+  const handleStartEngine = async () => {
+    setEngineStatus('started');
+    const response = await requests.startStopEngine(car.id, 'started').then((res) => {
+      const durationMin = (res.distance / res.velocity);
+      durationRef.current = durationMin;
+    });
+    setEngineStatus('drive');
+    animate(durationRef.current);
+    const drive = await requests.driveEngine(car.id).then((res) => {
+      if (!res.success) {
+        handleStopEngine();
       }
-      handleStopEngine();
-    };
-  }, [startRace]);
+    });
+  };
 
-  const animate = (duration: number) => {
+  const handleStopEngine = async () => {
+    if (!startRace) {
+      setEngineStatus('stopped');
+    }
+    if (animationRef.current) {
+      setEngineStatus('stopped');
+      cancelAnimationFrame(animationRef.current!);
+      animationRef.current = null;
+      const response = await requests.startStopEngine(car.id, 'stopped');
+    }
+  };
+
+  const animate = useCallback((duration: number) => {
     const start = performance.now();
     const initialPosition = 0;
     const finishLine = distance - 50;
@@ -70,39 +78,31 @@ function RacingLine({
     };
 
     animationRef.current = requestAnimationFrame(frame);
-  };
-
-  const handleStartEngine = async () => {
-    setEngineStatus('started');
-    const response = await requests.startStopEngine(car.id, 'started').then((res) => {
-      const durationMin = (res.distance / res.velocity);
-      durationRef.current = durationMin;
-    });
-    setEngineStatus('drive');
-    animate(durationRef.current);
-    const drive = await requests.driveEngine(car.id).then((res) => {
-      if (!res.success) {
-        handleStopEngine();
-      }
-    });
-  };
-
-  const handleStopEngine = async () => {
-    if (!startRace) {
-      setEngineStatus('stopped');
-      const response = await requests.startStopEngine(car.id, 'stopped');
-    }
-    if (animationRef.current) {
-      setEngineStatus('stopped');
-      cancelAnimationFrame(animationRef.current!);
-      animationRef.current = null;
-      const response = await requests.startStopEngine(car.id, 'stopped');
-    }
-  };
+  }, [distance, onFinish, handleStopEngine, car.id]);
 
   const handleDelete = (id: number): void => {
     deleteCar(id);
   };
+
+  useEffect(() => () => cancelAnimationFrame(animationRef.current!), []);
+
+  useEffect(() => {
+    if (!startRace) {
+      handleStopEngine();
+    }
+
+    if (startRace && engineStatus !== 'started') {
+      handleStartEngine();
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+      handleStopEngine();
+    };
+  }, [startRace]);
 
   return (
     <div key={car.id} className="line-container">
