@@ -54,12 +54,7 @@ class Requests {
     const response = await fetch(`${this.url}/garage/${id}`, {
       method: 'DELETE',
     });
-
-    try {
-      const delWinner = this.deleteWinner(id);
-    } catch (error) {
-      console.error(error);
-    }
+    const delWinner = this.deleteWinner(id);
   };
 
   updateCar = async (id: number, carData: CreateCar) => {
@@ -129,6 +124,9 @@ class Requests {
 
   deleteWinner = async (id: number) => {
     const response = await fetch(`${this.url}/winners/${id}`, { method: 'DELETE' });
+    if (!response.ok) {
+      console.error(`No winner found with ID ${id}, status: ${response.status}`);
+    }
   };
 
   updateWinner = async (winner: Winner) => {
