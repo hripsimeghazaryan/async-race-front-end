@@ -1,6 +1,6 @@
 deployed UI: https://hripsimeghazaryan.github.io/async-race-front-end/
 
-computed score: 
+computed score: 355
 
 ## 🏁 Basic Structure (85 points)
 
@@ -51,11 +51,11 @@ computed score:
 
 ## 📜 Dynamic Content Generation (30 points)
 
-- [ ] **JavaScript-Generated HTML Content (30 points):** All HTML content must be dynamically generated using JavaScript, with the `<body>` tag containing only a single `<script>` tag.
+- [x] **JavaScript-Generated HTML Content (30 points):** All HTML content must be dynamically generated using JavaScript, with the `<body>` tag containing only a single `<script>` tag.
 
 ## 🌐 Single Page Application (25 points)
 
-- [ ] **SPA Implementation (25 points):** The application must be a Single Page Application (SPA) using either React v18+ or Angular v17+. All content must be generated using TypeScript with `strict` and `noImplicitAny` settings enabled in `tsconfig.json`, ensuring seamless user experience without page reloads during navigation.
+- [x] **SPA Implementation (25 points):** The application must be a Single Page Application (SPA) using either React v18+ or Angular v17+. All content must be generated using TypeScript with `strict` and `noImplicitAny` settings enabled in `tsconfig.json`, ensuring seamless user experience without page reloads during navigation.
 
 ## 📦 Bundling and Tooling (20 points)
 
