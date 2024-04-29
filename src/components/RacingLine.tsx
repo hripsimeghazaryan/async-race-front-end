@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import {
   useState, useContext, useRef, useEffect, useCallback,
 } from 'react';
@@ -27,8 +26,11 @@ function RacingLine({
   const { deleteCar } = useContext(GarageDataContext) as GarageType;
 
   const distance = (carRef.current?.parentElement?.offsetWidth) || 0;
+  const abortRef = useRef(new AbortController());
 
   const handleStartEngine = async () => {
+    abortRef.current.abort();
+    abortRef.current = new AbortController();
     setEngineStatus('started');
     const response = await requests.startStopEngine(car.id, 'started').then((res) => {
       const durationMin = (res.distance / res.velocity);
@@ -36,7 +38,8 @@ function RacingLine({
     });
     setEngineStatus('drive');
     animate(durationRef.current);
-    const drive = await requests.driveEngine(car.id).then((res) => {
+    const { signal } = abortRef.current;
+    const drive = await requests.driveEngine(car.id, signal).then((res) => {
       if (!res.success) {
         handleStopEngine();
       }
@@ -44,15 +47,13 @@ function RacingLine({
   };
 
   const handleStopEngine = async () => {
-    if (!startRace) {
-      setEngineStatus('stopped');
-    }
+    setEngineStatus('stopped');
     if (animationRef.current) {
-      setEngineStatus('stopped');
       cancelAnimationFrame(animationRef.current!);
       animationRef.current = null;
-      const response = await requests.startStopEngine(car.id, 'stopped');
     }
+    abortRef.current.abort();
+    await requests.startStopEngine(car.id, 'stopped');
   };
 
   const animate = useCallback((duration: number) => {
@@ -87,10 +88,6 @@ function RacingLine({
   useEffect(() => () => cancelAnimationFrame(animationRef.current!), []);
 
   useEffect(() => {
-    if (!startRace) {
-      handleStopEngine();
-    }
-
     if (startRace && engineStatus !== 'started') {
       handleStartEngine();
     }

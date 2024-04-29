@@ -83,17 +83,25 @@ class Requests {
     return data;
   };
 
-  driveEngine = async (id: number, status: string = 'drive') => {
-    const response = await fetch(`${this.url}/engine?id=${id}&status=${status}`, {
-      method: 'PATCH',
-    });
-    const success = 200;
-    if (response.status !== success) {
-      return { success: false };
-    }
+  driveEngine = async (id: number, signal: AbortSignal, status: string = 'drive') => {
+    try {
+      const response = await fetch(`${this.url}/engine?id=${id}&status=${status}`, {
+        method: 'PATCH',
+        signal,
+      });
 
-    const data: { success: boolean } = await response.json();
-    return data;
+      const success = 200;
+      if (response.status !== success) {
+        return { success: false };
+      }
+      const data: { success: boolean } = await response.json();
+      return data;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return { success: false };
+      }
+      throw error;
+    }
   };
 
   getWinners = async (page: number, limit: number) => {
