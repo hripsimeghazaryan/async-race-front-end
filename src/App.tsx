@@ -11,11 +11,11 @@ function App() {
   const navigate = useNavigate();
 
   const handleGarageB = () => {
-    navigate('/');
+    navigate('/async-race-front-end/');
   };
 
   const handleWinnersB = () => {
-    navigate('/win');
+    navigate('/async-race-front-end/winners');
   };
 
   return (
@@ -25,8 +25,8 @@ function App() {
         <Button title="Winners" onClick={handleWinnersB} className="nav-btn" />
       </div>
       <Routes>
-        <Route path="/" element={<Garage />} />
-        <Route path="/win" element={<Winners />} />
+        <Route path="/async-race-front-end/" element={<Garage />} />
+        <Route path="/async-race-front-end/winners" element={<Winners />} />
       </Routes>
     </div>
   );
