@@ -25,7 +25,6 @@ function App() {
         <Button title="Winners" onClick={handleWinnersB} className="nav-btn" />
       </div>
       <Routes>
-        {/* <Route path="" element={<Navigate to="/garage" />} /> */}
         <Route path="/" element={<Garage />} />
         <Route path="/win" element={<Winners />} />
       </Routes>
