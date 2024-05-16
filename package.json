@@ -35,7 +35,7 @@
     "ci:format": "prettier --check \"**/*.{js,jsx,json,css,html}\"",
     "lint": "eslint './src/**/*.{js,jsx,ts,tsx}' --fix",
     "predeploy": "npm run build",
-    "deploy": "REACT_APP_API_URL=http://127.0.0.1:3000 gh-pages -d build"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
