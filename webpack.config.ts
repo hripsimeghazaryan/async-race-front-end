@@ -5,6 +5,7 @@ import * as webpack from 'webpack';
 import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import dotenv from 'dotenv';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const env = dotenv.config().parsed;
 const envKeys = env ? Object.keys(env).reduce((prev, next) => {
@@ -53,6 +54,13 @@ const config: webpack.Configuration = {
       directory: path.join(__dirname, 'public'),
     },
     port: 8080,
+    proxy: [
+      {
+        context: ['/garage', '/winner'],
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+      },
+    ],
   },
 };
 
